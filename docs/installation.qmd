@@ -32,7 +32,7 @@ docker run -it --rm --name postgwas-pipeline \
   -v "/path/to/postgwas-db-grch38-2025-11:/nf-postgwas/postgwas-db-grch38-2025-11:ro" \
   -e NXF_WORK="/nf-postgwas/work" \
   -w /nf-postgwas \
-  postgwas-pipeline /bin/bash
+  hlnicholls/postgwas-pipeline:latest /bin/bash
 ```
 
 Inside the container you can activate the Python environment and run Nextflow:

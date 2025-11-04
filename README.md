@@ -2,10 +2,9 @@
 [![Website](https://img.shields.io/website?down_color=red&down_message=down&up_message=up&url=https://hlnicholls.github.io/nf-postgwas/)](https://hlnicholls.github.io/nf-postgwas/)
 [![Docs status](https://img.shields.io/github/actions/workflow/status/hlnicholls/nf-postgwas/quarto-gh-pages.yml?branch=main)](https://github.com/hlnicholls/nf-postgwas/actions/workflows/quarto-gh-pages.yml)
 [![Release](https://img.shields.io/github/v/release/hlnicholls/nf-postgwas)](https://github.com/hlnicholls/nf-postgwas/releases)
-[![License](https://img.shields.io/github/license/hlnicholls/nf-postgwas)](https://github.com/hlnicholls/nf-postgwas/blob/main/LICENSE)
 [![Docker Pulls](https://img.shields.io/docker/pulls/hlnicholls/postgwas-pipeline)](https://hub.docker.com/r/hlnicholls/postgwas-pipeline)
 [![CI](https://img.shields.io/github/actions/workflow/status/hlnicholls/nf-postgwas/smoke-test.yml?branch=main)](https://github.com/hlnicholls/nf-postgwas/actions/workflows/smoke-test.yml)
-[![Issues](https://img.shields.io/github/issues/hlnicholls/nf-postgwas)](https://github.com/hlnicholls/nf-postgwas/issues)
+
 
 
 This pipeline provides a docker image with all dependencies pre-installed to run a post-genome-wide association study analysis pipeline via Nextflow.
