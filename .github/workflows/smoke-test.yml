@@ -13,11 +13,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Java
+      - name: Set up Java (required by Nextflow)
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '11'
+          # Nextflow requires Java 17 or later (up to 25)
+          java-version: '17'
+      - name: Check Java
+        run: |
+          java -version || true
+          echo "JAVA_HOME=$JAVA_HOME"
+          which java || true
       - name: Install Nextflow
         run: |
           curl -s https://get.nextflow.io | bash
