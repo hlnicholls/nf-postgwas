@@ -18,7 +18,9 @@ The `nf-postgwas` pipeline integrates variant annotation, gene prioritisation, f
 
 Docker needs to be installed on your system. Instructions for installing Docker can be found [here](https://docs.docker.com/get-docker/).
 
-**Databases can be downloaded from: [huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11)**
+**Several databases need to be mounted to the docker container to run the pipeline. These can be be downloaded from: [huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11)**
+
+**Only an example 1000 genomes reference panel is given. You will also need to mount your own LD reference panel for accurate LD calculations.**
 
 Pull the docker image and run it with the following commands (volume mounts will need to modified for your input data):
 
@@ -28,17 +30,10 @@ docker pull hlnicholls/postgwas-pipeline:latest
 
 # 2) Run it (auto-activates conda env postgwas_py39)
 docker run -it --rm --name postgwas-pipeline \
-  -v "/path/on/host/postgwas-db-grch38-2025-11:/nf-postgwas/databases:ro" \
+  -v "/path/on/host/postgwas-db-grch38-2025-11:/nf-postgwas/postgwas-db-grch38-2025-11:ro" \
   -v "/path/on/host/Regenie_GWAS_Input:/nf-postgwas/GWAS_Input:ro" \
   hlnicholls/postgwas-pipeline:latest
 ```
-
-## Documentation (GitHub Pages)
-
-Full documentation is published to GitHub Pages and is available at:
-
-https://hlnicholls.github.io/nf-postgwas/
-
 
 Conda environments in Docker image:
 - ```postgwas_py39``` - primary python (v3.9) environment for most scripts. Includes PLINK2.
@@ -133,6 +128,11 @@ Each step in the pipeline (e.g. variant annotation, fine mapping, colocalisation
   - Uses OpenTargets to annotate gene-drug targets. Identifies relevant drugs for prioritised genes via input disease terms of interest in `params.yaml`.
   - Uses DGIdb data to annotate identify potentially "druggable" gene targets.
 
+## Documentation (GitHub Pages)
+
+Full documentation is published to GitHub Pages and is available at:
+
+https://hlnicholls.github.io/nf-postgwas/
 
 
 ## Development: pre-commit hooks
