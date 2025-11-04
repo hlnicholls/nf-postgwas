@@ -1,0 +1,1 @@
+Sitemap: https://hlnicholls.github.io/nf-postgwas/sitemap.xml

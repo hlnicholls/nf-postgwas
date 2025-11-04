@@ -1,0 +1,205 @@
+[
+  {
+    "objectID": "docs/parameters.html",
+    "href": "docs/parameters.html",
+    "title": "Parameters",
+    "section": "",
+    "text": "This page summarises the most important parameters to set before running nf-postgwas.\nImportant files:\n\nparams.yaml - an example parameters file in the repository root.\nschema.json - JSON Schema describing required parameters and types.\n\nKey parameters\n\ntraits (array): list of trait names to analyse (required).\nsample_sizes (array): sample sizes corresponding to each trait.\ndatabases (string): path to the postgwas databases directory (required).\ngwas_input_dir / merged_regenie_files: input GWAS files (per-chromosome or merged).\noutput_path: root directory for pipeline outputs.\nld_reference_panel: path to LD reference panel used for LD calculations.\n\nToggle modules (booleans):\n\nrun_loci, run_ld, run_magma, run_pops, run_coloc, run_fine_mapping, run_enrichment, run_prioritisation, run_druggability - enable/disable parts of the pipeline.\n\nFor a complete machine-readable reference see the schema.json file in the repository root."
+  },
+  {
+    "objectID": "docs/usage.html",
+    "href": "docs/usage.html",
+    "title": "Usage",
+    "section": "",
+    "text": "Configure params.yaml in the repository root (see /params.yaml for an example).\nMake sure databases are downloaded and mounted (see README and params.yaml databases path).\nRun the pipeline inside the Docker container or your local environment.\n\nExample (inside the Docker container):\nconda activate postgwas_py39\nnextflow run . -profile local -params-file params.yaml\n\n\nUse Nextflow profiles defined in nextflow.config: local, hpc, standard, and test.\n\n\n\n\nRun only PREP and LOCI discovery (fast):\n\nnextflow run . -profile local -params-file params.yaml --run_loci true --run_ld false\n\nRun full pipeline (example):\n\nnextflow run . -profile local -params-file params.yaml\n\n\n\nResults are written to the directory specified by params.output_path (default: /nf-postgwas/results). Sub-folders include:\n\nGWAS_Preprocessing\nLoci_Preprocessing\nLD_Annotation\nFine-mapping\nMAGMA\nPrioritisation (gene-level prioritisation outputs)"
+  },
+  {
+    "objectID": "docs/usage.html#quickstart",
+    "href": "docs/usage.html#quickstart",
+    "title": "Usage",
+    "section": "",
+    "text": "Configure params.yaml in the repository root (see /params.yaml for an example).\nMake sure databases are downloaded and mounted (see README and params.yaml databases path).\nRun the pipeline inside the Docker container or your local environment.\n\nExample (inside the Docker container):\nconda activate postgwas_py39\nnextflow run . -profile local -params-file params.yaml\n\n\nUse Nextflow profiles defined in nextflow.config: local, hpc, standard, and test.\n\n\n\n\nRun only PREP and LOCI discovery (fast):\n\nnextflow run . -profile local -params-file params.yaml --run_loci true --run_ld false\n\nRun full pipeline (example):\n\nnextflow run . -profile local -params-file params.yaml\n\n\n\nResults are written to the directory specified by params.output_path (default: /nf-postgwas/results). Sub-folders include:\n\nGWAS_Preprocessing\nLoci_Preprocessing\nLD_Annotation\nFine-mapping\nMAGMA\nPrioritisation (gene-level prioritisation outputs)"
+  },
+  {
+    "objectID": "docs/examples.html",
+    "href": "docs/examples.html",
+    "title": "Examples",
+    "section": "",
+    "text": "This page shows quick runnable examples and references to the tests/ directory included with this repository.\n\nSmoke test\nThe repository includes a tests/ directory with a minimal config for smoke testing. To run a smoke test locally (inside the Docker image):\nconda activate postgwas_py39\nnextflow run . -profile test -params-file tests/params.yaml\nReplace -profile test with -profile local for a local run using your params.yaml."
+  },
+  {
+    "objectID": "docs/subworkflows/druggability_flow.html",
+    "href": "docs/subworkflows/druggability_flow.html",
+    "title": "DRUGGABILITY_FLOW",
+    "section": "",
+    "text": "DRUGGABILITY_FLOW annotates prioritised genes with drug-target information and known compounds.\nKey responsibilities\n\nQuery and annotate gene-drug target profiles using DBs such as DGIdb and OpenTargets.\n\nImportant parameters\n\nrun_druggability - requires run_prioritisation to be enabled.\n\nOutputs\n\nDruggability tables and drug-target links for candidate genes."
+  },
+  {
+    "objectID": "docs/subworkflows/magma_flow.html",
+    "href": "docs/subworkflows/magma_flow.html",
+    "title": "MAGMA_FLOW",
+    "section": "",
+    "text": "MAGMA_FLOW runs gene-based association using MAGMA and generates inputs for PoPS and enrichment.\nKey responsibilities\n\nMap SNPs to genes and run MAGMA gene analyses.\nProduce gene-level association tables.\n\nImportant parameters\n\nrun_magma, magma_memory, magma_cpus.\n\nOutputs\n\nMAGMA gene association files in the MAGMA result folder."
+  },
+  {
+    "objectID": "docs/subworkflows/prioritisation_flow.html",
+    "href": "docs/subworkflows/prioritisation_flow.html",
+    "title": "PRIORITISATION_FLOW",
+    "section": "",
+    "text": "PRIORITISATION_FLOW integrates evidence (PoPS, enrichment, coloc, variant annotation, ClinGen/OMIM) to score genes within loci.\nKey responsibilities\n\nCombine multiple evidence sources and assign prioritisation scores.\nProduce a ranked list of candidate genes per locus.\n\nImportant parameters\n\nrun_prioritisation and related toggles for included evidence sources.\n\nOutputs\n\nPrioritised gene tables used by Druggability analysis."
+  },
+  {
+    "objectID": "docs/subworkflows/prep_flow.html",
+    "href": "docs/subworkflows/prep_flow.html",
+    "title": "PREP_FLOW",
+    "section": "",
+    "text": "PREP_FLOW performs initial GWAS preprocessing.\nKey responsibilities\n\nMerge per-chromosome REGENIE files into {trait}_regenie_allchr.txt (unless merged_regenie_files provided).\nQuality control filtering (MAF, INFO thresholds).\nLiftover between builds (if required) and creation of GENPOS columns.\nRSID mapping using 1000 Genomes reference.\n\nImportant parameters\n\nmerged_regenie_files - provide merged GWAS to skip per-chromosome merging.\nskip_prep - boolean; auto-skip if PREP outputs already exist.\n\nOutputs\n\n{trait}_regenie_allchr.txt\n{trait}_38_37.txt and {trait}_38_37_rsids.txt"
+  },
+  {
+    "objectID": "docs/subworkflows/pops_flow.html",
+    "href": "docs/subworkflows/pops_flow.html",
+    "title": "PoPS_FLOW",
+    "section": "",
+    "text": "PoPS integrates MAGMA outputs with feature matrices to prioritise genes.\nKey responsibilities\n\nRun PoPS scoring using provided feature files and MAGMA results.\n\nImportant parameters\n\nrun_pops, pops_script, pops_features_all.\n\nNotes\n\nPoPS typically requires MAGMA outputs and benefits from loci grouping for best performance."
+  },
+  {
+    "objectID": "docs/developer_guide.html",
+    "href": "docs/developer_guide.html",
+    "title": "Developer Guide",
+    "section": "",
+    "text": "This guide covers how to develop and test changes to the pipeline.\nProject layout highlights\n\nmain.nf - top-level workflow wiring subworkflows.\nsubworkflows/ - each subworkflow is a separate Nextflow file (e.g. prep_flow.nf).\nbin/, modules/ - helper scripts and modules used by the pipeline.\nconf/ - configuration profiles (local, hpc, base).\n\nAdding or modifying a subworkflow\n\nCreate or edit subworkflows/&lt;name&gt;_flow.nf and expose inputs/outputs as channels.\nUpdate main.nf to include the subworkflow and add toggles in params.yaml / nextflow.config.\nAdd or update tests in tests/ and run the test profile.\n\nTesting locally\n\nUse the test profile for quick smoke checks: nextflow run . -profile test.\nUse the Docker image for reproducible environments.\n\nCoding conventions\n\nKeep scripts idempotent and avoid writing to fixed paths outside params.output_path.\nPrefer small, single-purpose processes in Nextflow for easier resource tuning."
+  },
+  {
+    "objectID": "docs/index.html",
+    "href": "docs/index.html",
+    "title": "nf-postgwas - Post-GWAS Analysis Pipeline",
+    "section": "",
+    "text": "This documentation site provides installation instructions, quickstart usage examples, per-subworkflow descriptions, and developer notes."
+  },
+  {
+    "objectID": "conf/HPC.html",
+    "href": "conf/HPC.html",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Quick checklist to adapt conf/hpc.config to your site\nExample job scripts (SGE serial submit and MPI/ignite parallel)\nApptainer (container) usage notes and best-practices\nWhere to put site-specific overrides\n\n\n\n\n\nPick the executor your site supports:\n\nSGE: process.executor = 'sge'\nSLURM: process.executor = 'slurm'\nPBS/Torque: process.executor = 'pbs'\nIgnite (MPI): omit the executor or set process.executor = 'ignite'\n\nUpdate the queue/partition name in conf/hpc.config (queue for SGE, partition for SLURM).\nTune clusterOptions so Nextflow submits jobs with the right flags for your scheduler (examples are in conf/hpc.config).\nConsider making a site-specific config (e.g., conf/site.example.config) and add it to .gitignore so users can copy/modify it safely.\nTest with a tiny resource request (1 core, small memory, short walltime) before running full analyses.\n\n\n\n\nCreate a small script (e.g. examples/run_nextflow_sge.sh) and adapt the resource flags to your queue/account.\n#!/bin/bash\n#$ -cwd\n#$ -j y\n#$ -pe smp 4\n#$ -l h_rt=24:0:0\n#$ -l h_vmem=12G\n\n# Option A: run Nextflow inside an Apptainer container (recommended)\n# You may want to pull the container once on a compute node:\n# apptainer pull postgwas-pipeline.sif docker://hlnicholls/postgwas-pipeline:latest\n\napptainer exec postgwas-pipeline.sif \\\n  nextflow -DXmx=1G -C nextflow.config run . -profile hpc -params-file params.yaml\n\n# Option B: use the system-provided Nextflow module instead\n# module load nextflow\n# nextflow -DXmx=1G -C nextflow.config run . -profile hpc -params-file params.yaml\n\n\n\nWhen you need many cores across nodes and your site supports Ignite+MPI, request multiple nodes and run the master via mpirun.\n#!/bin/bash\n#$ -cwd\n#$ -j y\n#$ -pe parallel 96\n#$ -l h_rt=240:0:0\n\nmodule load openmpi\napptainer exec postgwas-pipeline.sif \\\n  mpirun --pernode nextflow run . -profile hpc -params-file params.yaml\n\n\n\n\nPull large images on a compute node / interactive session to avoid long pulls inside short batch jobs.\nExample pull (once): apptainer pull postgwas-pipeline.sif docker://hlnicholls/postgwas-pipeline:latest\nIf your site provides Apptainer-wrapped modules for common containers, you can module load postgwas-pipeline and use the module name instead of the apptainer exec command.\nPrefer apptainer exec when you want to run specific commands inside the container; apptainer run will execute the container’s runscript.\n\n\n\n\n\nCreate a conf/site.config or conf/&lt;site&gt;.config (not committed) with your site-specific queue names, account flags, and any clusterOptions needed. Example:\n\nprofiles { site { includeConfig 'conf/hpc.config'; includeConfig 'conf/site.apocrita.config' } }\nand a conf/site.apocrita.config (local) can contain only the lines you want to change (queue name, account flags, etc.)."
+  },
+  {
+    "objectID": "conf/HPC.html#contents",
+    "href": "conf/HPC.html#contents",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Quick checklist to adapt conf/hpc.config to your site\nExample job scripts (SGE serial submit and MPI/ignite parallel)\nApptainer (container) usage notes and best-practices\nWhere to put site-specific overrides"
+  },
+  {
+    "objectID": "conf/HPC.html#quick-adaptation-checklist",
+    "href": "conf/HPC.html#quick-adaptation-checklist",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Pick the executor your site supports:\n\nSGE: process.executor = 'sge'\nSLURM: process.executor = 'slurm'\nPBS/Torque: process.executor = 'pbs'\nIgnite (MPI): omit the executor or set process.executor = 'ignite'\n\nUpdate the queue/partition name in conf/hpc.config (queue for SGE, partition for SLURM).\nTune clusterOptions so Nextflow submits jobs with the right flags for your scheduler (examples are in conf/hpc.config).\nConsider making a site-specific config (e.g., conf/site.example.config) and add it to .gitignore so users can copy/modify it safely.\nTest with a tiny resource request (1 core, small memory, short walltime) before running full analyses."
+  },
+  {
+    "objectID": "conf/HPC.html#example-job-script-sge-serial-master-job",
+    "href": "conf/HPC.html#example-job-script-sge-serial-master-job",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Create a small script (e.g. examples/run_nextflow_sge.sh) and adapt the resource flags to your queue/account.\n#!/bin/bash\n#$ -cwd\n#$ -j y\n#$ -pe smp 4\n#$ -l h_rt=24:0:0\n#$ -l h_vmem=12G\n\n# Option A: run Nextflow inside an Apptainer container (recommended)\n# You may want to pull the container once on a compute node:\n# apptainer pull postgwas-pipeline.sif docker://hlnicholls/postgwas-pipeline:latest\n\napptainer exec postgwas-pipeline.sif \\\n  nextflow -DXmx=1G -C nextflow.config run . -profile hpc -params-file params.yaml\n\n# Option B: use the system-provided Nextflow module instead\n# module load nextflow\n# nextflow -DXmx=1G -C nextflow.config run . -profile hpc -params-file params.yaml"
+  },
+  {
+    "objectID": "conf/HPC.html#example-job-script-mpi-ignite-parallel",
+    "href": "conf/HPC.html#example-job-script-mpi-ignite-parallel",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "When you need many cores across nodes and your site supports Ignite+MPI, request multiple nodes and run the master via mpirun.\n#!/bin/bash\n#$ -cwd\n#$ -j y\n#$ -pe parallel 96\n#$ -l h_rt=240:0:0\n\nmodule load openmpi\napptainer exec postgwas-pipeline.sif \\\n  mpirun --pernode nextflow run . -profile hpc -params-file params.yaml"
+  },
+  {
+    "objectID": "conf/HPC.html#apptainer-container-notes",
+    "href": "conf/HPC.html#apptainer-container-notes",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Pull large images on a compute node / interactive session to avoid long pulls inside short batch jobs.\nExample pull (once): apptainer pull postgwas-pipeline.sif docker://hlnicholls/postgwas-pipeline:latest\nIf your site provides Apptainer-wrapped modules for common containers, you can module load postgwas-pipeline and use the module name instead of the apptainer exec command.\nPrefer apptainer exec when you want to run specific commands inside the container; apptainer run will execute the container’s runscript."
+  },
+  {
+    "objectID": "conf/HPC.html#site-specific-overrides",
+    "href": "conf/HPC.html#site-specific-overrides",
+    "title": "HPC (cluster) run notes for nf-postgwas",
+    "section": "",
+    "text": "Create a conf/site.config or conf/&lt;site&gt;.config (not committed) with your site-specific queue names, account flags, and any clusterOptions needed. Example:\n\nprofiles { site { includeConfig 'conf/hpc.config'; includeConfig 'conf/site.apocrita.config' } }\nand a conf/site.apocrita.config (local) can contain only the lines you want to change (queue name, account flags, etc.)."
+  },
+  {
+    "objectID": "docs/citation.html",
+    "href": "docs/citation.html",
+    "title": "Citation",
+    "section": "",
+    "text": "If you use nf-postgwas in your research, please cite the repository and include a link to the version you used (Git tag or commit SHA). Example citation format:\nNicholls H. nf-postgwas: A Nextflow pipeline for post-GWAS analysis. GitHub repository. https://github.com/hlnicholls/nf-postgwas\nYou may also include the DOI or paper reference if/when a formal publication is available."
+  },
+  {
+    "objectID": "docs/subworkflows/plotting_flow.html",
+    "href": "docs/subworkflows/plotting_flow.html",
+    "title": "PLOTTING_FLOW",
+    "section": "",
+    "text": "PLOTTING_FLOW generates visualization outputs: Manhattan plots, QQ, LocusZoom-style regional plots and QC figures.\nKey responsibilities\n\nCreate global GWAS QC plots and per-locus visualisations.\n\nImportant parameters\n\nrun_plot and plotting-related resource knobs.\n\nOutputs\n\nPlots in GWAS_Plots and Loci result folders."
+  },
+  {
+    "objectID": "docs/subworkflows/index.html",
+    "href": "docs/subworkflows/index.html",
+    "title": "Subworkflows",
+    "section": "",
+    "text": "This page summarises the pipeline subworkflows. Each subworkflow has its own page explaining inputs, outputs and important parameters.\n\nPREP: data preprocessing, merging per-chromosome GWAS, QC, liftover, RSID mapping.\nLOCI: identify genome-wide significant loci and create locus-specific GWAS files.\nLD: produce LD annotation and r2-based proxies for loci.\nLOCI_GROUPS: group loci into blocks using proximity and LD.\nVARIANT_ANNOT: annotate variants (CADD, pCHiC, RegulomeDB).\nFINE_MAPPING: Wakefield fine-mapping and credible sets.\nMAGMA: gene-based analysis.\nPoPS: gene prioritisation using PoPS (requires MAGMA).\nCOLOC: colocalisation with GTEx and custom traits.\nENRICHMENT: gene-set enrichment analyses.\nPRIORITISATION: integrate multiple lines of evidence to prioritise genes.\nDRUGGABILITY: annotate drug-target information for prioritised genes.\nPLOTTING: generate summary plots and locus plots.\n\nOpen the sub-pages in the navigation for short descriptions and key params."
+  },
+  {
+    "objectID": "docs/subworkflows/fine_mapping_flow.html",
+    "href": "docs/subworkflows/fine_mapping_flow.html",
+    "title": "FINE_MAPPING_FLOW",
+    "section": "",
+    "text": "Fine-mapping narrows credible causal variants at each locus. The current default method is Wakefield.\nKey responsibilities\n\nCompute Wakefield-style posterior probabilities and credible sets.\nProduce credible set outputs consumable by annotation and plotting steps.\n\nImportant parameters\n\nrun_fine_mapping and fine_mapping_method (default: wakefield).\n\nOutputs\n\nCredible set tables and annotated VCFs for downstream tools."
+  },
+  {
+    "objectID": "docs/subworkflows/coloc_flow.html",
+    "href": "docs/subworkflows/coloc_flow.html",
+    "title": "COLOC_FLOW",
+    "section": "",
+    "text": "COLOC_FLOW runs colocalisation analyses between GWAS loci and external QTL/GWAS summary statistics (e.g., GTEx v8 eQTLs or a custom trait).\nKey responsibilities\n\nPrepare locus-specific inputs for coloc tests.\nRun GTEx coloc (if run_gtex_coloc enabled) and custom trait coloc (if run_custom_coloc).\n\nImportant parameters\n\nrun_coloc, run_gtex_coloc, run_custom_coloc - main toggles.\ncustom_trait_name, custom_gwas_path - supply a custom GWAS for coloc.\n\nOutputs\n\nPer-locus coloc summary files and aggregated tables indicating colocalised signals."
+  },
+  {
+    "objectID": "docs/subworkflows/ld_flow.html",
+    "href": "docs/subworkflows/ld_flow.html",
+    "title": "LD_FLOW",
+    "section": "",
+    "text": "LD_FLOW computes linkage disequilibrium (LD) metrics for loci using a user-supplied reference panel (PLINK).\nKey responsibilities\n\nCompute r2 values for nearby proxies using PLINK.\nAnnotate loci with LD proxies above threshold (ld_window_r2, ld_window_kb).\n\nImportant parameters\n\nld_reference_panel - path to the PLINK-formatted reference panel.\nld_window_kb, ld_window_r2, ld_window - tune LD windowing behavior.\n\nOutputs\n\nLD annotation files per locus and aggregated LD tables."
+  },
+  {
+    "objectID": "docs/subworkflows/loci_flow.html",
+    "href": "docs/subworkflows/loci_flow.html",
+    "title": "LOCI_FLOW",
+    "section": "",
+    "text": "LOCI_FLOW identifies genome-wide significant loci from GWAS summary statistics and produces per-locus GWAS files used by downstream steps.\nKey responsibilities\n\nIdentify lead variants (p &lt; 5e-8) and prune nearby variants.\nProduce locus-specific GWAS files for fine-mapping, plotting, and coloc.\n\nImportant parameters\n\nrun_loci - enable/disable loci discovery.\ndistance and windowing defaults are in the process scripts and params.yaml.\n\nOutputs\n\ncompiled_loci.csv and per-locus GWAS files in results folders."
+  },
+  {
+    "objectID": "docs/troubleshooting.html",
+    "href": "docs/troubleshooting.html",
+    "title": "Troubleshooting",
+    "section": "",
+    "text": "Common issues and hints\n\nMemory errors: increase params.max_memory and process-specific memory in nextflow.config.\nMissing databases: ensure params.databases points to the mounted postgwas-db-grch38-2025-11 path.\nLD mismatch: ensure ld_reference_panel is harmonised to the genome build of your GWAS.\nPREP auto-skip: PREP is auto-detected as complete if certain files exist - delete them to force re-run.\n\nIf you encounter other issues, please open an issue on the repository with logs from the Nextflow run (use -with-report and -with-timeline)."
+  },
+  {
+    "objectID": "docs/installation.html",
+    "href": "docs/installation.html",
+    "title": "Installation",
+    "section": "",
+    "text": "Docker (recommended) or a working Nextflow + Conda/R/Python environment\nGit (to clone this repository)"
+  },
+  {
+    "objectID": "docs/installation.html#requirements",
+    "href": "docs/installation.html#requirements",
+    "title": "Installation",
+    "section": "",
+    "text": "Docker (recommended) or a working Nextflow + Conda/R/Python environment\nGit (to clone this repository)"
+  },
+  {
+    "objectID": "docs/installation.html#using-the-provided-docker-image",
+    "href": "docs/installation.html#using-the-provided-docker-image",
+    "title": "Installation",
+    "section": "Using the provided Docker image",
+    "text": "Using the provided Docker image\nThis repository includes a Dockerfile that bundles required tools and environments.\nBuild the image locally (example):\ndocker build --platform linux/amd64 -t postgwas-pipeline .\nRun an interactive container (edit mounts to match your paths):\ndocker run -it --rm --name postgwas-pipeline \\\n  --platform linux/amd64 \\\n  -v \"$(pwd):/nf-postgwas\" \\\n  -v \"/path/to/postgwas-db-grch38-2025-11:/nf-postgwas/postgwas-db-grch38-2025-11:ro\" \\\n  -e NXF_WORK=\"/nf-postgwas/work\" \\\n  -w /nf-postgwas \\\n  postgwas-pipeline /bin/bash\nInside the container you can activate the Python environment and run Nextflow:\nconda activate postgwas_py39\nnextflow run . -profile local -params-file params.yaml"
+  }
+]
