@@ -9,7 +9,9 @@ repos:
       - id: check-merge-conflict
 
   - repo: https://github.com/charliermarsh/ruff-pre-commit
-    rev: v0.21.0
+    # Pin to a branch to avoid CI failing if a specific tag is not present.
+    # You can replace 'main' with a stable tag (e.g. 'v0.x.y') if desired.
+    rev: main
     hooks:
       - id: ruff
         args: ["--fix"]
@@ -34,4 +36,3 @@ repos:
         entry: Rscript --vanilla tools/pre-commit/lintr-wrapper.R
         language: system
         files: (?:.*)\.(R|r|Rmd|rmd)$
-        stages: [commit]
