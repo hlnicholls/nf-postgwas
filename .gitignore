@@ -90,6 +90,8 @@ nf-test
 nf-test-*
 .nf-test.log
 
+!/bin/nf-test
+
 /archive
 /.quarto/
 **/*.quarto_ipynb
