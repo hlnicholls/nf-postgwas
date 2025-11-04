@@ -133,23 +133,3 @@ Each step in the pipeline (e.g. variant annotation, fine mapping, colocalisation
 Full documentation is published to GitHub Pages and is available at:
 
 https://hlnicholls.github.io/nf-postgwas/
-
-
-## Development: pre-commit hooks
-
-This repository uses `pre-commit` to run linters and basic checks locally and in CI. The hooks include generic checks (trailing whitespace, YAML validation, large file prevention), Python formatting/linters (`black` and `ruff`), and an R linter (`lintr`) for R scripts.
-
-To install and activate locally (macOS / zsh):
-
-```bash
-# install pre-commit (in user or virtual env)
-python3 -m pip install --user pre-commit
-
-# from repo root
-pre-commit install
-
-# run all checks once
-pre-commit run --all-files
-```
-
-The repository also runs `pre-commit` on push and pull-requests via a GitHub Actions workflow (`.github/workflows/pre-commit.yml`).
