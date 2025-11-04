@@ -8,6 +8,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # ensure tags and full history are available for pre-commit hook installs
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
