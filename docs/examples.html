@@ -250,6 +250,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate postgwas_py39</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run . <span class="at">-profile</span> test <span class="at">-params-file</span> tests/params.yaml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Replace <code>-profile test</code> with <code>-profile local</code> for a local run using your <code>params.yaml</code>.</p>
+</section>
+<section id="synthetic-gwas-example" class="level3">
+<h3 class="anchored" data-anchor-id="synthetic-gwas-example">Synthetic GWAS Example</h3>
+<p>Synthetic GWASs have been generated in <code>/nf-postgwas/data/input/tests/synthetic_1kg_GWAS</code>. The default settings in <code>params.yaml</code> are set to use this <code>trait1</code> GWAS to run through the pipeline (with mounting the databases from huggingface: <a href="https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11" class="uri">https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11</a>)</p>
+<p><strong>Results are random and for example only. They are not associated with any real trait</strong></p>
+<p>To run the pipeline with this synthetic data:</p>
+<pre><code>docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
+
+git clone https://github.com/hlnicholls/nf-postgwas.git
+
+# in the repo directory download https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
+
+# keep the folder name postgwas-db-grch38-2025-11
+
+# in the repo directory run:
+
+docker run -it --rm --name postgwas-pipeline \
+  --platform linux/amd64 \
+  -v "/nf-postgwas:/nf-postgwas" \
+  -v "/nf-postgwas/results:/nf-postgwas/results" \
+  -v "/nf-postgwas/work:/nf-postgwas/work" \
+  -e NXF_WORK="/nf-postgwas/work" \
+  -w /nf-postgwas \
+  postgwas-pipeline
+
+conda activate postgwas_py39
+nextflow run . -profile local -params-file params.yaml</code></pre>
 
 
 </section>
