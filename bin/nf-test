@@ -1,7 +1,7 @@
 #!/bin/bash
 APP_HOME="$HOME/.nf-test"
 APP_JAR="nf-test.jar"
-APP_UPDATE_URL="https://code.askimed.com/install/nf-test"
+APP_UPDATE_URL="https://get.nf-test.com"
 
 set -e
 

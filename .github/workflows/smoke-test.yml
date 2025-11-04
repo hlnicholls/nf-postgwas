@@ -24,8 +24,9 @@ jobs:
           chmod +x nextflow
       - name: Run smoke test
         run: |
-          chmod +x ./nf-test || true
-          # Ensure nf-test runtime is available (will download if needed)
-          ./nf-test update || true
-          # Run the repository test harness (moved to bin/)
+          # Ensure the local test wrapper is executable
+          chmod +x ./bin/nf-test || true
+          # Install nf-test runtime (installer will place runtime under $HOME/.nf-test)
+          wget -qO- https://get.nf-test.com | bash
+          # Run the repository test harness
           ./bin/nf-test test
