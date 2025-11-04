@@ -256,27 +256,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Synthetic GWASs have been generated in <code>/nf-postgwas/data/input/tests/synthetic_1kg_GWAS</code>. The default settings in <code>params.yaml</code> are set to use this <code>trait1</code> GWAS to run through the pipeline (with mounting the databases from huggingface: <a href="https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11" class="uri">https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11</a>)</p>
 <p><strong>Results are random and for example only. They are not associated with any real trait</strong></p>
 <p>To run the pipeline with this synthetic data:</p>
-<pre><code>docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
-
-git clone https://github.com/hlnicholls/nf-postgwas.git
-
-# in the repo directory download https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
-
-# keep the folder name postgwas-db-grch38-2025-11
-
-# in the repo directory run:
-
-docker run -it --rm --name postgwas-pipeline \
-  --platform linux/amd64 \
-  -v "/nf-postgwas:/nf-postgwas" \
-  -v "/nf-postgwas/results:/nf-postgwas/results" \
-  -v "/nf-postgwas/work:/nf-postgwas/work" \
-  -e NXF_WORK="/nf-postgwas/work" \
-  -w /nf-postgwas \
-  postgwas-pipeline
-
-conda activate postgwas_py39
-nextflow run . -profile local -params-file params.yaml</code></pre>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> pull <span class="at">--platform</span> linux/amd64 hlnicholls/postgwas-pipeline:latest</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/hlnicholls/nf-postgwas.git</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># in the repo directory download https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># keep the folder name postgwas-db-grch38-2025-11</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># in the repo directory run:</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="ex">docker</span> run <span class="at">-it</span> <span class="at">--rm</span> <span class="at">--name</span> postgwas-pipeline <span class="dt">\</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">--platform</span> linux/amd64 <span class="dt">\</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> <span class="st">"/nf-postgwas:/nf-postgwas"</span> <span class="dt">\</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> <span class="st">"/nf-postgwas/results:/nf-postgwas/results"</span> <span class="dt">\</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">-v</span> <span class="st">"/nf-postgwas/work:/nf-postgwas/work"</span> <span class="dt">\</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">-e</span> NXF_WORK=<span class="st">"/nf-postgwas/work"</span> <span class="dt">\</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">-w</span> /nf-postgwas <span class="dt">\</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  postgwas-pipeline</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="ex">conda</span> activate postgwas_py39</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="ex">nextflow</span> run . <span class="at">-profile</span> local <span class="at">-params-file</span> params.yaml</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>
