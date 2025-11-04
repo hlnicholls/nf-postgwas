@@ -27,7 +27,7 @@ Pull the docker image and run it with the following commands (volume mounts will
 # 1) Pull the image
 docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 
-# 2) Run it (auto-activates conda env postgwas_py39)
+# 2) Run it with huggingface dataset downloaded and mounted
 docker run -it --rm --name postgwas-pipeline \
   -v "/path/on/host/postgwas-db-grch38-2025-11:/nf-postgwas/postgwas-db-grch38-2025-11:ro" \
   -v "/path/on/host/Regenie_GWAS_Input:/nf-postgwas/GWAS_Input:ro" \

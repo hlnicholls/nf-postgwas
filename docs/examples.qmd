@@ -14,3 +14,36 @@ nextflow run . -profile test -params-file tests/params.yaml
 ```
 
 Replace `-profile test` with `-profile local` for a local run using your `params.yaml`.
+
+
+### Synthetic GWAS Example
+
+Synthetic GWASs have been generated in ```/nf-postgwas/data/input/tests/synthetic_1kg_GWAS```. The default settings in `params.yaml` are set to use this `trait1` GWAS to run through the pipeline (with mounting the databases from huggingface: <https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11>)
+
+**Results are random and for example only. They are not associated with any real trait**
+
+To run the pipeline with this synthetic data:
+
+```
+docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
+
+git clone https://github.com/hlnicholls/nf-postgwas.git
+
+# in the repo directory download https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
+
+# keep the folder name postgwas-db-grch38-2025-11
+
+# in the repo directory run:
+
+docker run -it --rm --name postgwas-pipeline \
+  --platform linux/amd64 \
+  -v "/nf-postgwas:/nf-postgwas" \
+  -v "/nf-postgwas/results:/nf-postgwas/results" \
+  -v "/nf-postgwas/work:/nf-postgwas/work" \
+  -e NXF_WORK="/nf-postgwas/work" \
+  -w /nf-postgwas \
+  postgwas-pipeline
+
+conda activate postgwas_py39
+nextflow run . -profile local -params-file params.yaml
+```
