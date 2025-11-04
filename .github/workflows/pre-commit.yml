@@ -11,11 +11,20 @@ jobs:
         with:
           # ensure tags and full history are available for pre-commit hook installs
           fetch-depth: 0
+          # use the GITHUB_TOKEN so any subsequent git fetch operations that
+          # pre-commit performs can authenticate successfully
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+
+      - name: Set up git credentials
+        # Configure git to use the GITHUB_TOKEN for https://github.com/ URLs so
+        # `git fetch origin --tags` inside the runner succeeds without extra auth.
+        run: |
+          git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
       - name: Run pre-commit (action)
         uses: pre-commit/action@v3.0.0
