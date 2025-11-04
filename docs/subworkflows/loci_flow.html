@@ -209,19 +209,43 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>LOCI_FLOW identifies genome-wide significant loci from GWAS summary statistics and produces per-locus GWAS files used by downstream steps.</p>
-<p>Key responsibilities</p>
+<p>How loci are identified</p>
 <ul>
-<li>Identify lead variants (p &lt; 5e-8) and prune nearby variants.</li>
-<li>Produce locus-specific GWAS files for fine-mapping, plotting, and coloc.</li>
+<li>Lead variants are selected using a p-value threshold of p &lt; 5e-8.</li>
+<li>The pipeline writes two canonical locus tables:
+<ul>
+<li><code>All_loci_ungrouped.csv</code> — a full list of discovered loci (one row per signal, per trait).</li>
+<li><code>All_loci_ungrouped_unique_across_all_traits.csv</code> — the unique set of lead variants deduplicated across all input traits (useful when running with multiple GWAS inputs).</li>
+</ul></li>
+</ul>
+<p>Per-locus outputs</p>
+<ul>
+<li>For each discovered lead, per-locus GWAS files are produced for downstream fine-mapping, plotting (regional/Manhattan), and colocalisation.</li>
+</ul>
+<p>LD-based grouping (post-LD calculation)</p>
+<ul>
+<li>After LD is calculated, lead variants are grouped into locus blocks using both distance and LD criteria:
+<ul>
+<li>Distance: ±500 kb around the lead variant</li>
+<li>LD: r2 &gt; 0.4</li>
+</ul></li>
+<li>The grouped blocks are written to <code>Loci_Preprocessing/All_loci_blocks.csv</code> (one block per grouped set).</li>
+</ul>
+<p>Cross-trait close-p-value reporting</p>
+<ul>
+<li>When multiple GWAS are provided as input, the pipeline additionally generates <code>Loci_Preprocessing/All_loci_blocks_with_close_pvals.csv</code>.
+<ul>
+<li>This file flags cases where a lead variant (from one trait) has an extremely small p-value (p &lt; 1e-15) in any of the other input GWAS traits. It helps to identify signals that are strongly associated across traits and may require special attention when interpreting shared loci.</li>
+</ul></li>
 </ul>
 <p>Important parameters</p>
 <ul>
 <li><code>run_loci</code> - enable/disable loci discovery.</li>
-<li>distance and windowing defaults are in the process scripts and <code>params.yaml</code>.</li>
+<li>Distance and windowing defaults are in the process scripts and <code>params.yaml</code>.</li>
 </ul>
 <p>Outputs</p>
 <ul>
-<li><code>compiled_loci.csv</code> and per-locus GWAS files in results folders.</li>
+<li><code>All_loci_ungrouped.csv</code>, <code>All_loci_ungrouped_unique_across_all_traits.csv</code>, <code>Loci_Preprocessing/All_loci_blocks.csv</code>, <code>Loci_Preprocessing/All_loci_blocks_with_close_pvals.csv</code>, plus per-locus GWAS files in the results folders.</li>
 </ul>
 
 
