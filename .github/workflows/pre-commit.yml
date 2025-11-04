@@ -24,7 +24,11 @@ jobs:
         # Configure git to use the GITHUB_TOKEN for https://github.com/ URLs so
         # `git fetch origin --tags` inside the runner succeeds without extra auth.
         run: |
-          git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+          # Configure git to use the GITHUB_TOKEN only for this repository so that
+          # public GitHub repositories (used by pre-commit hooks) remain accessible
+          # anonymously. This prevents forcing authentication for hooks like
+          # https://github.com/pre-commit/mirrors-shellcheck/ which are public.
+          git config --global url."https://${{ secrets.GITHUB_TOKEN }}:x-oauth-basic@github.com/hlnicholls/nf-postgwas".insteadOf "https://github.com/hlnicholls/nf-postgwas"
 
       - name: Run pre-commit (action)
         uses: pre-commit/action@v3.0.0
