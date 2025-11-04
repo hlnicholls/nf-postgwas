@@ -1,0 +1,37 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-merge-conflict
+
+  - repo: https://github.com/charliermarsh/ruff-pre-commit
+    rev: v0.21.0
+    hooks:
+      - id: ruff
+        args: ["--fix"]
+
+  - repo: https://github.com/psf/black
+    rev: 23.9.1
+    hooks:
+      - id: black
+        language_version: python3
+
+  - repo: https://github.com/pre-commit/mirrors-shellcheck
+    rev: v0.8.0
+    hooks:
+      - id: shellcheck
+        files: ^(bin/|.*\.sh$)
+        args: ["--severity", "warning"]
+
+  - repo: local
+    hooks:
+      - id: r-lintr
+        name: r-lintr
+        entry: Rscript --vanilla tools/pre-commit/lintr-wrapper.R
+        language: system
+        files: (?:.*)\.(R|r|Rmd|rmd)$
+        stages: [commit]
