@@ -18,6 +18,8 @@ jobs:
           python-version: '3.11'
 
       - name: Run pre-commit (action)
-        uses: pre-commit/action@v4
+        # Use a concrete release tag so the runner can resolve the action reliably.
+        # If you want automated updates, change this to a branch like 'v4' later.
+        uses: pre-commit/action@v4.3.0
         with:
           extra_args: --all-files
