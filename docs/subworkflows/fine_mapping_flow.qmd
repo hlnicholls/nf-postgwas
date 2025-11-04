@@ -1,0 +1,18 @@
+---
+title: FINE_MAPPING_FLOW
+---
+
+Fine-mapping narrows credible causal variants at each locus. The current default method is Wakefield.
+
+Key responsibilities
+
+- Compute Wakefield-style posterior probabilities and credible sets.
+- Produce credible set outputs consumable by annotation and plotting steps.
+
+Important parameters
+
+- `run_fine_mapping` and `fine_mapping_method` (default: `wakefield`).
+
+Outputs
+
+- Credible set tables and annotated VCFs for downstream tools.

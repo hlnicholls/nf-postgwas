@@ -1,0 +1,39 @@
+// schema.json
+
+// :contentReference[oaicite:11]{index=11} :contentReference[oaicite:12]{index=12}
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "nf-postgwas params",
+  "type": "object",
+  "properties": {
+    "traits": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "sample_sizes": {
+      "type": "array",
+      "items": { "type": "integer", "minimum": 1 }
+    },
+    "genome_build": { "type": "string", "enum": ["hg19", "hg38"] },
+    "home_path": { "type": "string" },
+    "output_path": { "type": "string" },
+    "databases": { "type": "string" },
+    "gwas_input_dir": { "type": "string" },
+    "input_suffix": { "type": "string" },
+    "chroms": {
+      "type": "array",
+      "items": { "type": "string", "pattern": "^(?:[1-9]|1[0-9]|2[0-2])$" }
+    },
+    "outdir": { "type": "string" }
+  },
+  "required": [
+    "traits",
+    "home_path",
+    "output_path",
+    "databases",
+    "gwas_input_dir",
+    "input_suffix",
+    "outdir"
+  ]
+}

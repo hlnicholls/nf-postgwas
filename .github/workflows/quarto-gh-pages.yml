@@ -1,0 +1,33 @@
+name: Publish Quarto site
+
+on:
+  push:
+    branches: [ main ]
+
+# Ensure the job has permission to write repository contents (needed to push gh-pages)
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Install Quarto
+        run: |
+          curl -LO https://quarto.org/download/latest/quarto-linux-amd64.deb
+          sudo apt install -y ./quarto-linux-amd64.deb
+
+      - name: Render site
+        run: quarto render
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site

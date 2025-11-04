@@ -1,0 +1,103 @@
+traits: ["trait1"]
+sample_sizes: [1000]
+
+# Max memory usage for all processes
+max_memory: '14 GB'
+
+plink_mem_mb: 8000   # sets --memory in PLINK for LD calculation
+disease_terms:
+  - heart failure
+  - myocardial infarction
+  - arrhythmmia
+  - hypertrophic cardiomyopathy
+  - dilated cardiomyopathy
+
+GTEx_tissue_terms:
+  - heart
+  - aorta
+  - atrial
+
+HiC_tissues:
+  - "Left Ventricle"
+  - "Right Ventricle"
+  - "Right Atrium"
+  - "Aorta"
+
+# ------------ Input GWAS files  ------------
+# Folder containing regenie input files (per chromosome for all traits)
+# uncomment merged_regenie_files as well if you are inputting regenie files per chromosome
+
+#gwas_input_dir: "/nf-postgwas/data/input/tests/synthetic_1kg_GWAS"
+#merged_regenie_files: {}
+
+# Or comment out gwas_input_dir and merged_regenie_files above and provide premade full GWAS files:
+# (files must be in regenie format, this just skips per-chr merge step)
+
+# !! file name must conform to "{trait}_regenie_allchr.txt" !!
+merged_regenie_files:
+    trait1: "/nf-postgwas/data/input/tests/synthetic_1kg_GWAS/trait1_regenie_allchr.txt"
+
+# ------------ Additional Directories ------------
+# Results output directory
+output_path: "/nf-postgwas/results"
+
+# Nextflow reports / publishDir (ok to keep same as output_path)
+outdir: "/nf-postgwas/results"
+
+# Resources directory
+databases: "/nf-postgwas/postgwas-db-grch38-2025-11"
+
+# Reference panel for LD calculation (expected to be harmonised to your GWAS)
+ld_reference_panel: "/nf-postgwas/postgwas-db-grch38-2025-11/1000genomes/fake_imputation"
+
+
+# ------------ Pipeline behavior settings ------------
+# Only PREP_FLOW is mandatory. All other modules can be toggled on/off.
+
+# skip_prep: false  # Set to false to skip PREP_FLOW if outputs exist (auto-detected by default)
+
+# Core graph-building steps
+run_loci: true          # Run locus discovery & compilation
+run_ld: true           # Run LD annotation (requires run_loci)
+run_loci_groups: true   # Group loci into blocks (requires run_ld)
+run_plot: true        # Generate plots (requires run_ld and run_loci)
+
+# LDSC (LD Score Regression)
+run_ldsc: true  # Heritability and genetic correlation analysis
+
+# Variant annotation
+run_variant_annotation: true  # CADD, pCHiC, RegulomeDB (uses LD outputs)
+
+# Fine-mapping
+run_fine_mapping: true             # Wakefield implementation (uses LD outputs)
+fine_mapping_method: "wakefield"    # Method: wakefield (more methods TBC)
+
+# Colocalisation settings
+run_coloc: true         # Main toggle for coloc analyses (requires LD + loci CSV)
+run_custom_coloc: true  # Custom trait coloc
+run_gtex_coloc: true     # GTEx eQTL coloc
+# GTEx tissues for eQTL colocalisation (used if run_coloc and run_gtex_coloc is true)
+# You must have the data for these available in your postgwas-db-grch38-2025-11/gtex_v8_data
+gtex_tissues: ["Heart_Atrial_Appendage", "Heart_Left_Ventricle"]
+
+# Custom colocalisation trait (only used if run_custom_coloc is true)
+custom_trait_name: "CAD"
+custom_gwas_path: "/nf-postgwas/postgwas-db-grch38-2025-11/coloc_gwas/Aragam_CAD_lifted.txt"
+# Custom GWAS file must have columns in GRCh38:
+# chromosome, base_pair_location, effect_allele, other_allele, beta, standard_error, p_value, effect_allele_frequency
+
+# Gene enrichment analysis
+run_enrichment: true   # enrichr
+
+# MAGMA gene-based analysis
+run_magma: true
+
+# PoPS (Polygenic Priority Score)
+run_pops: true  # Requires run_magma=true; benefits from loci groups
+
+# Gene prioritisation
+run_prioritisation: true
+# Uses available inputs (PoPS, enrichment, coloc, variant annotation) when enabled
+
+# Druggability analysis
+run_druggability: true  # Requires run_prioritisation=true

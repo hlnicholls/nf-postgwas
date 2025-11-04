@@ -1,0 +1,21 @@
+---
+title: Subworkflows
+---
+
+This page summarises the pipeline subworkflows. Each subworkflow has its own page explaining inputs, outputs and important parameters.
+
+- PREP: data preprocessing, merging per-chromosome GWAS, QC, liftover, RSID mapping.
+- LOCI: identify genome-wide significant loci and create locus-specific GWAS files.
+- LD: produce LD annotation and r2-based proxies for loci.
+- LOCI_GROUPS: group loci into blocks using proximity and LD.
+- VARIANT_ANNOT: annotate variants (CADD, pCHiC, RegulomeDB).
+- FINE_MAPPING: Wakefield fine-mapping and credible sets.
+- MAGMA: gene-based analysis.
+- PoPS: gene prioritisation using PoPS (requires MAGMA).
+- COLOC: colocalisation with GTEx and custom traits.
+- ENRICHMENT: gene-set enrichment analyses.
+- PRIORITISATION: integrate multiple lines of evidence to prioritise genes.
+- DRUGGABILITY: annotate drug-target information for prioritised genes.
+- PLOTTING: generate summary plots and locus plots.
+
+Open the sub-pages in the navigation for short descriptions and key params.

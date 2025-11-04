@@ -1,0 +1,29 @@
+nextflow_pipeline {
+
+    name "Test Workflow main.nf"
+    script "tests/smoke/main.nf"
+
+    test("Should run without failures") {
+
+        when {
+            params {
+                // provide minimal params for tests so base.config reporting
+                // which references params.outdir doesn't break when nf-test
+                // writes an otherwise-empty params.json
+                outdir = "${projectDir}/.nf-test/reports"
+            }
+        }
+
+        then {
+            assert workflow.success
+
+            // Verify the produced config_R.R exists in the test reports folder
+            def cfg = file("${projectDir}/.nf-test/reports/config_R_smoketrait.R")
+            assert cfg.exists()
+            def txt = cfg.text
+            assert txt.contains("traits <- c('smoketrait')") || txt.contains('traits <- c("smoketrait")')
+        }
+
+    }
+
+}

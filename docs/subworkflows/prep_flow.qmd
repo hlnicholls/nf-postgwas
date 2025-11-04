@@ -1,0 +1,22 @@
+---
+title: PREP_FLOW
+---
+
+PREP_FLOW performs initial GWAS preprocessing.
+
+Key responsibilities
+
+- Merge per-chromosome REGENIE files into `{trait}_regenie_allchr.txt` (unless `merged_regenie_files` provided).
+- Quality control filtering (MAF, INFO thresholds).
+- Liftover between builds (if required) and creation of GENPOS columns.
+- RSID mapping using 1000 Genomes reference.
+
+Important parameters
+
+- `merged_regenie_files` - provide merged GWAS to skip per-chromosome merging.
+- `skip_prep` - boolean; auto-skip if PREP outputs already exist.
+
+Outputs
+
+- `{trait}_regenie_allchr.txt`
+- `{trait}_38_37.txt` and `{trait}_38_37_rsids.txt`

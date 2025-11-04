@@ -1,0 +1,28 @@
+---
+title: Developer Guide
+---
+
+This guide covers how to develop and test changes to the pipeline.
+
+Project layout highlights
+
+- `main.nf` - top-level workflow wiring subworkflows.
+- `subworkflows/` - each subworkflow is a separate Nextflow file (e.g. `prep_flow.nf`).
+- `bin/`, `modules/` - helper scripts and modules used by the pipeline.
+- `conf/` - configuration profiles (local, hpc, base).
+
+Adding or modifying a subworkflow
+
+1. Create or edit `subworkflows/<name>_flow.nf` and expose inputs/outputs as channels.
+2. Update `main.nf` to include the subworkflow and add toggles in `params.yaml` / `nextflow.config`.
+3. Add or update tests in `tests/` and run the `test` profile.
+
+Testing locally
+
+- Use the `test` profile for quick smoke checks: `nextflow run . -profile test`.
+- Use the Docker image for reproducible environments.
+
+Coding conventions
+
+- Keep scripts idempotent and avoid writing to fixed paths outside `params.output_path`.
+- Prefer small, single-purpose processes in Nextflow for easier resource tuning.

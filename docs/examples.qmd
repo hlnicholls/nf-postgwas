@@ -1,0 +1,16 @@
+---
+title: Examples
+---
+
+This page shows quick runnable examples and references to the `tests/` directory included with this repository.
+
+### Smoke test
+
+The repository includes a `tests/` directory with a minimal config for smoke testing. To run a smoke test locally (inside the Docker image):
+
+```bash
+conda activate postgwas_py39
+nextflow run . -profile test -params-file tests/params.yaml
+```
+
+Replace `-profile test` with `-profile local` for a local run using your `params.yaml`.

@@ -1,0 +1,19 @@
+---
+title: LD_FLOW
+---
+
+LD_FLOW computes linkage disequilibrium (LD) metrics for loci using a user-supplied reference panel (PLINK).
+
+Key responsibilities
+
+- Compute r2 values for nearby proxies using PLINK.
+- Annotate loci with LD proxies above threshold (`ld_window_r2`, `ld_window_kb`).
+
+Important parameters
+
+- `ld_reference_panel` - path to the PLINK-formatted reference panel.
+- `ld_window_kb`, `ld_window_r2`, `ld_window` - tune LD windowing behavior.
+
+Outputs
+
+- LD annotation files per locus and aggregated LD tables.

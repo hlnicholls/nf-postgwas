@@ -1,0 +1,12 @@
+---
+title: Troubleshooting
+---
+
+Common issues and hints
+
+- Memory errors: increase `params.max_memory` and process-specific `memory` in `nextflow.config`.
+- Missing databases: ensure `params.databases` points to the mounted `postgwas-db-grch38-2025-11` path.
+- LD mismatch: ensure `ld_reference_panel` is harmonised to the genome build of your GWAS.
+- PREP auto-skip: PREP is auto-detected as complete if certain files exist - delete them to force re-run.
+
+If you encounter other issues, please open an issue on the repository with logs from the Nextflow run (use `-with-report` and `-with-timeline`).

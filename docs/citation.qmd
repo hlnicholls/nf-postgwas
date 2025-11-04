@@ -1,0 +1,9 @@
+---
+title: Citation
+---
+
+If you use nf-postgwas in your research, please cite the repository and include a link to the version you used (Git tag or commit SHA). Example citation format:
+
+Nicholls H. nf-postgwas: A Nextflow pipeline for post-GWAS analysis. GitHub repository. https://github.com/hlnicholls/nf-postgwas
+
+You may also include the DOI or paper reference if/when a formal publication is available.

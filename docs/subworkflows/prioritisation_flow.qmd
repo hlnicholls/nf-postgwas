@@ -1,0 +1,18 @@
+---
+title: PRIORITISATION_FLOW
+---
+
+PRIORITISATION_FLOW integrates evidence (PoPS, enrichment, coloc, variant annotation, ClinGen/OMIM) to score genes within loci.
+
+Key responsibilities
+
+- Combine multiple evidence sources and assign prioritisation scores.
+- Produce a ranked list of candidate genes per locus.
+
+Important parameters
+
+- `run_prioritisation` and related toggles for included evidence sources.
+
+Outputs
+
+- Prioritised gene tables used by Druggability analysis.

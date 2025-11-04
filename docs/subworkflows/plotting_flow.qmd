@@ -1,0 +1,17 @@
+---
+title: PLOTTING_FLOW
+---
+
+PLOTTING_FLOW generates visualization outputs: Manhattan plots, QQ, LocusZoom-style regional plots and QC figures.
+
+Key responsibilities
+
+- Create global GWAS QC plots and per-locus visualisations.
+
+Important parameters
+
+- `run_plot` and plotting-related resource knobs.
+
+Outputs
+
+- Plots in `GWAS_Plots` and `Loci` result folders.

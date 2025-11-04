@@ -1,0 +1,17 @@
+---
+title: DRUGGABILITY_FLOW
+---
+
+DRUGGABILITY_FLOW annotates prioritised genes with drug-target information and known compounds.
+
+Key responsibilities
+
+- Query and annotate gene-drug target profiles using DBs such as DGIdb and OpenTargets.
+
+Important parameters
+
+- `run_druggability` - requires `run_prioritisation` to be enabled.
+
+Outputs
+
+- Druggability tables and drug-target links for candidate genes.

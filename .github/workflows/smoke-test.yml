@@ -1,0 +1,28 @@
+name: Smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'tests/**'
+      - 'main.nf'
+      - 'modules/**'
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '11'
+      - name: Install Nextflow
+        run: |
+          curl -s https://get.nextflow.io | bash
+          chmod +x nextflow
+      - name: Run smoke test
+        run: |
+          chmod +x ./nf-test || true
+          ./tests/run_smoke.sh

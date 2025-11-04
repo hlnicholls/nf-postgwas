@@ -1,0 +1,45 @@
+---
+title: Usage
+---
+
+## Quickstart
+
+1. Configure `params.yaml` in the repository root (see `/params.yaml` for an example).
+2. Make sure databases are downloaded and mounted (see README and `params.yaml` `databases` path).
+3. Run the pipeline inside the Docker container or your local environment.
+
+Example (inside the Docker container):
+
+```bash
+conda activate postgwas_py39
+nextflow run . -profile local -params-file params.yaml
+```
+
+### Profiles
+
+Use Nextflow profiles defined in `nextflow.config`: `local`, `hpc`, `standard`, and `test`.
+
+### Common run scenarios
+
+- Run only PREP and LOCI discovery (fast):
+
+```bash
+nextflow run . -profile local -params-file params.yaml --run_loci true --run_ld false
+```
+
+- Run full pipeline (example):
+
+```bash
+nextflow run . -profile local -params-file params.yaml
+```
+
+### Outputs
+
+Results are written to the directory specified by `params.output_path` (default: `/nf-postgwas/results`). Sub-folders include:
+
+- `GWAS_Preprocessing`
+- `Loci_Preprocessing`
+- `LD_Annotation`
+- `Fine-mapping`
+- `MAGMA`
+- `Prioritisation` (gene-level prioritisation outputs)

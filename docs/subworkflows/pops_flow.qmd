@@ -1,0 +1,17 @@
+---
+title: PoPS_FLOW
+---
+
+PoPS integrates MAGMA outputs with feature matrices to prioritise genes.
+
+Key responsibilities
+
+- Run PoPS scoring using provided feature files and MAGMA results.
+
+Important parameters
+
+- `run_pops`, `pops_script`, `pops_features_all`.
+
+Notes
+
+- PoPS typically requires MAGMA outputs and benefits from loci grouping for best performance.

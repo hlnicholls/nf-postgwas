@@ -1,0 +1,58 @@
+project:
+  type: website
+
+website:
+  title: "nf-postgwas"
+  site-url: https://hlnicholls.github.io/nf-postgwas/
+  navbar:
+    left:
+      - text: Home
+        href: docs/index.qmd
+      - text: Installation
+        href: docs/installation.qmd
+      - text: Usage
+        href: docs/usage.qmd
+      - text: Parameters
+        href: docs/parameters.qmd
+      - text: Subworkflows
+        menu:
+          - text: Overview
+            href: docs/subworkflows/index.qmd
+          - text: PREP
+            href: docs/subworkflows/prep_flow.qmd
+          - text: LOCI
+            href: docs/subworkflows/loci_flow.qmd
+          - text: LD
+            href: docs/subworkflows/ld_flow.qmd
+          - text: Colocalisation
+            href: docs/subworkflows/coloc_flow.qmd
+          - text: Fine-mapping
+            href: docs/subworkflows/fine_mapping_flow.qmd
+          - text: MAGMA
+            href: docs/subworkflows/magma_flow.qmd
+          - text: PoPS
+            href: docs/subworkflows/pops_flow.qmd
+          - text: Prioritisation
+            href: docs/subworkflows/prioritisation_flow.qmd
+          - text: Druggability
+            href: docs/subworkflows/druggability_flow.qmd
+          - text: Plotting
+            href: docs/subworkflows/plotting_flow.qmd
+      - text: Examples
+        href: docs/examples.qmd
+      - text: Developer Guide
+        href: docs/developer_guide.qmd
+      - text: Troubleshooting
+        href: docs/troubleshooting.qmd
+      - text: Citation
+        href: docs/citation.qmd
+
+format:
+  html:
+    theme: cosmo
+
+# Do not execute code blocks by default when building the site to keep
+# the build fast and dependency-free. We can enable execution per-page
+# by setting `execute: true` in a page's front matter.
+execute:
+  enabled: false

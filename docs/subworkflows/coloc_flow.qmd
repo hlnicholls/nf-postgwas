@@ -1,0 +1,19 @@
+---
+title: COLOC_FLOW
+---
+
+COLOC_FLOW runs colocalisation analyses between GWAS loci and external QTL/GWAS summary statistics (e.g., GTEx v8 eQTLs or a custom trait).
+
+Key responsibilities
+
+- Prepare locus-specific inputs for coloc tests.
+- Run GTEx coloc (if `run_gtex_coloc` enabled) and custom trait coloc (if `run_custom_coloc`).
+
+Important parameters
+
+- `run_coloc`, `run_gtex_coloc`, `run_custom_coloc` - main toggles.
+- `custom_trait_name`, `custom_gwas_path` - supply a custom GWAS for coloc.
+
+Outputs
+
+- Per-locus coloc summary files and aggregated tables indicating colocalised signals.

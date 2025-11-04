@@ -1,0 +1,19 @@
+---
+title: LOCI_FLOW
+---
+
+LOCI_FLOW identifies genome-wide significant loci from GWAS summary statistics and produces per-locus GWAS files used by downstream steps.
+
+Key responsibilities
+
+- Identify lead variants (p < 5e-8) and prune nearby variants.
+- Produce locus-specific GWAS files for fine-mapping, plotting, and coloc.
+
+Important parameters
+
+- `run_loci` - enable/disable loci discovery.
+- distance and windowing defaults are in the process scripts and `params.yaml`.
+
+Outputs
+
+- `compiled_loci.csv` and per-locus GWAS files in results folders.

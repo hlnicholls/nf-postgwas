@@ -1,0 +1,25 @@
+---
+title: Parameters
+---
+
+This page summarises the most important parameters to set before running `nf-postgwas`.
+
+Important files:
+
+- `params.yaml` - an example parameters file in the repository root.
+- `schema.json` - JSON Schema describing required parameters and types.
+
+Key parameters
+
+- `traits` (array): list of trait names to analyse (required).
+- `sample_sizes` (array): sample sizes corresponding to each trait.
+- `databases` (string): path to the `postgwas` databases directory (required).
+- `gwas_input_dir` / `merged_regenie_files`: input GWAS files (per-chromosome or merged).
+- `output_path`: root directory for pipeline outputs.
+- `ld_reference_panel`: path to LD reference panel used for LD calculations.
+
+Toggle modules (booleans):
+
+- `run_loci`, `run_ld`, `run_magma`, `run_pops`, `run_coloc`, `run_fine_mapping`, `run_enrichment`, `run_prioritisation`, `run_druggability` - enable/disable parts of the pipeline.
+
+For a complete machine-readable reference see the `schema.json` file in the repository root.

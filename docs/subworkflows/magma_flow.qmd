@@ -1,0 +1,18 @@
+---
+title: MAGMA_FLOW
+---
+
+MAGMA_FLOW runs gene-based association using MAGMA and generates inputs for PoPS and enrichment.
+
+Key responsibilities
+
+- Map SNPs to genes and run MAGMA gene analyses.
+- Produce gene-level association tables.
+
+Important parameters
+
+- `run_magma`, `magma_memory`, `magma_cpus`.
+
+Outputs
+
+- MAGMA gene association files in the `MAGMA` result folder.
