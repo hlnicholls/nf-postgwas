@@ -25,4 +25,7 @@ jobs:
       - name: Run smoke test
         run: |
           chmod +x ./nf-test || true
-          ./tests/run_smoke.sh
+          # Ensure nf-test runtime is available (will download if needed)
+          ./nf-test update || true
+          # Run the repository test harness
+          ./nf-test test
