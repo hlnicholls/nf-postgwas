@@ -2,17 +2,25 @@
 title: PRIORITISATION_FLOW
 ---
 
-PRIORITISATION_FLOW integrates evidence (PoPS, enrichment, coloc, variant annotation, ClinGen/OMIM) to score genes within loci.
+PRIORITISATION_FLOW integrates evidence (PoPS, enrichment, coloc, variant annotation, ClinGen/OMIM) to score genes within loci. It collects annotations and applies a weighted scoring system across genes in each locus to prioritise candidate causal genes based on data collected earlier in the pipeline.
 
-Key responsibilities
+Overview of the scoring criteria
 
-- Combine multiple evidence sources and assign prioritisation scores.
-- Produce a ranked list of candidate genes per locus.
+- The prioritisation implements a simple additive weighting scheme: each gene receives binary flags for a small set of evidence types (presence = 1, absence = 0), and the per-gene score is the sum of those flags. Higher scores indicate more independent lines of supporting evidence.
 
-Important parameters
+Primary flags used (computed in `bin/genes/gene_prioritisation.R`):
 
-- `run_prioritisation` and related toggles for included evidence sources.
+1. Pops — whether the gene is the top PoPS gene in the locus (Top_PoPS_Score_per_Locus == 'Yes').
+2. HiC_or_GTEx — a joint flag that is set when either a Hi-C link (HiC_tissue) exists for the gene in a relevant tissue OR the gene has EnrichR/GTEx tissue evidence matching the pipeline tissue keywords (this groups Hi-C and GTEx-derived evidence into a single contribution).
+3. MGI_or_OMIM_or_ClinGen — a joint disease-evidence flag: set when any of IMPC mouse phenotypes, OMIM annotations, or ClinGen disease entries match the user-provided disease keyword set.
+4. custom_coloc (custom coloc) — optional: set when a user-provided custom-coloc result indicates PP4 ≥ 0.8 for the gene/locus. The dynamic output column name for this flag is `has_<CUSTOM>_Coloc_H4_>0.8` (where `<CUSTOM>` is your custom trait name supplied to the pipeline).
+
+Scoring and boosts
+
+- The per-gene `Gene_Prioritisation_Score` is computed as the row-wise sum of the numeric flags: `Pops`, `HiC_or_GTEx`, `MGI_or_OMIM_or_ClinGen`, and `custom_coloc` (each 0/1).
+
+- The highest possible prioritisation score is 4 (if including coloc results), identifying the most relevant gens, and the lowest is 1.
 
 Outputs
 
-- Prioritised gene tables used by Druggability analysis.
+- The process writes a final `Prioritised_genes.csv` into the configured `Prioritisation` output directory. Key output fields include `Nearest_Gene_10kb`, `Locus_number`, `Locus_name`, `Gene_Prioritisation_Score`, the dynamic custom coloc flag (e.g., `has_<custom>_Coloc_H4_>0.8`), and per-evidence columns (e.g., `Top_PoPS_Score_per_Locus`, `HiC_tissue`, `MGI_IMPC_Phenotypes`, `ClinGen_Disease`, `OMIM_Expanded`, `GTEx_Tissues_V8_2023`).

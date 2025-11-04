@@ -63,7 +63,7 @@ process CUSTOM_COLOC {
   ln -sf "\$WORK_DIR/\$SCRIPT_CUSTOM_PATH"   ./Custom_coloc.R
   ln -sf "\$WORK_DIR/\$SCRIPT_PROCESS_PATH"  ./process_custom_coloc_output.R
   ln -sf "\$WORK_DIR/\$SCRIPT_PROCESS_PATH"  ./process_Custom_coloc_output.R
-  ln -sf "\$WORK_DIR/\$ALL_LOCI_PATH"        ./Singletrait_all_loci.csv
+  ln -sf "\$WORK_DIR/\$ALL_LOCI_PATH"        ./All_loci_ungrouped.csv
 
   # Run only if we don't already have >= expected RDS (and at least one expected)
   if [ "\$EXPECTED_PHENOS" -gt 0 ] && [ "\$RDS_FILES" -lt "\$EXPECTED_PHENOS" ]; then

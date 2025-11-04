@@ -86,7 +86,7 @@ pleiotropy_outpath       <- file.path(output_path, "Pleiotropy")
 # ============================================================
 # SECTION 3: SPECIFIC FILE PATHS
 # ============================================================
-all_loci    <- file.path(loci_output_path, "Singletrait_all_loci.csv")
+all_loci    <- file.path(loci_output_path, "All_loci_ungrouped.csv")
 # Canonical reference used downstream
 var_file    <- file.path(loci_output_path, "all_traits_loci_38_with_ld_genes.txt")
 
@@ -180,8 +180,8 @@ log_path = f"{home_path}/Logs"
 
 # LD and loci paths for collate/annotate scripts
 loci_preprocessing = f"{output_path}/Loci_Preprocessing"
-ld_path = f"{loci_preprocessing}/Single_trait_LD"
-loci_path = f"{loci_preprocessing}/Singletrait_all_loci.csv"
+ld_path = f"{loci_preprocessing}/LD"
+loci_path = f"{loci_preprocessing}/All_loci_ungrouped.csv"
 
 # Variant annotation and fine-mapping paths
 var_path = f"{output_path}/Variant_annotation"
@@ -247,9 +247,9 @@ export PLINK1_PATH PLINK2_PATH
 LOCI_PREPROCESSING="\${OUTPUT_PATH}/Loci_Preprocessing"
 
 # Single-trait outputs
-SINGLE_TRAIT_LOCI="\${LOCI_PREPROCESSING}/Singletrait_all_loci.csv"
-SINGLE_TRAIT_LOCI_HCM="\${LOCI_PREPROCESSING}/Single_trait_LD/missing_loci.csv"
-SINGLE_TRAIT_LD="\${LOCI_PREPROCESSING}/Single_trait_LD"
+SINGLE_TRAIT_LOCI="\${LOCI_PREPROCESSING}/All_loci_ungrouped.csv"
+SINGLE_TRAIT_LOCI_HCM="\${LOCI_PREPROCESSING}/LD/missing_loci.csv"
+SINGLE_TRAIT_LD="\${LOCI_PREPROCESSING}/LD"
 
 # LDSC folders & data
 LDSC_OUT="\${LOCI_PREPROCESSING}/LDSC_results"

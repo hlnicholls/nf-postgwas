@@ -47,6 +47,6 @@ process IDENTIFY_CLOSE_PVALS {
   Rscript ${script_path}
   
   # The script modifies all_loci in place, so copy the result
-  cp "${params.output_path}/Loci_Preprocessing/Singletrait_all_loci.csv" "\$WORK_DIR/All_loci_blocks_with_close_pvals.csv"
+  cp "${params.output_path}/Loci_Preprocessing/All_loci_ungrouped.csv" "\$WORK_DIR/All_loci_blocks_with_close_pvals.csv"
   """
 }

@@ -4,16 +4,34 @@ title: LOCI_FLOW
 
 LOCI_FLOW identifies genome-wide significant loci from GWAS summary statistics and produces per-locus GWAS files used by downstream steps.
 
-Key responsibilities
+How loci are identified
 
-- Identify lead variants (p < 5e-8) and prune nearby variants.
-- Produce locus-specific GWAS files for fine-mapping, plotting, and coloc.
+- Lead variants are selected using a p-value threshold of p < 5e-8.
+- The pipeline writes two canonical locus tables:
+	- `All_loci_ungrouped.csv` — a full list of discovered loci (one row per signal, per trait).
+	- `All_loci_ungrouped_unique_across_all_traits.csv` — the unique set of lead variants deduplicated across all input traits (useful when running with multiple GWAS inputs).
+
+Per-locus outputs
+
+- For each discovered lead, per-locus GWAS files are produced for downstream fine-mapping, plotting (regional/Manhattan), and colocalisation.
+
+LD-based grouping (post-LD calculation)
+
+- After LD is calculated, lead variants are grouped into locus blocks using both distance and LD criteria:
+	- Distance: ±500 kb around the lead variant
+	- LD: r2 > 0.4
+- The grouped blocks are written to `Loci_Preprocessing/All_loci_blocks.csv` (one block per grouped set).
+
+Cross-trait close-p-value reporting
+
+- When multiple GWAS are provided as input, the pipeline additionally generates `Loci_Preprocessing/All_loci_blocks_with_close_pvals.csv`.
+	- This file flags cases where a lead variant (from one trait) has an extremely small p-value (p < 1e-15) in any of the other input GWAS traits. It helps to identify signals that are strongly associated across traits and may require special attention when interpreting shared loci.
 
 Important parameters
 
 - `run_loci` - enable/disable loci discovery.
-- distance and windowing defaults are in the process scripts and `params.yaml`.
+- Distance and windowing defaults are in the process scripts and `params.yaml`.
 
 Outputs
 
-- `compiled_loci.csv` and per-locus GWAS files in results folders.
+- `All_loci_ungrouped.csv`, `All_loci_ungrouped_unique_across_all_traits.csv`, `Loci_Preprocessing/All_loci_blocks.csv`, `Loci_Preprocessing/All_loci_blocks_with_close_pvals.csv`, plus per-locus GWAS files in the results folders.

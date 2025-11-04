@@ -82,9 +82,29 @@ read_trait_gwas <- function(path_prefix, trait) {
 }
 
 read_all_loci <- function(pathfile) {
+  # Defensive: if the loci file is missing (pipeline ordering or timing),
+  # return an empty table rather than erroring out. Manhattan plotting
+  # can proceed without locus labels.
+  if (!file.exists(pathfile)) {
+    warning("Loci file not found: ", pathfile, ". Proceeding without locus labels.")
+    return(data.table())
+  }
+
   sep <- if (endsWith(tolower(pathfile), ".csv")) "," else "\t"
-  al <- data.table::fread(pathfile, sep = sep)
-  stopifnot("Phenotype" %in% names(al))
+  al <- tryCatch(
+    data.table::fread(pathfile, sep = sep),
+    error = function(e) {
+      warning("Failed to read loci file: ", pathfile, " (", e$message, "). Proceeding without locus labels.")
+      return(data.table())
+    }
+  )
+
+  if (nrow(al) == 0) return(al)
+  if (!"Phenotype" %in% names(al)) {
+    warning("Loci file does not contain 'Phenotype' column: ", pathfile, ". Proceeding without locus labels.")
+    return(data.table())
+  }
+
   if (!"CHROM" %in% names(al) && "CHR" %in% names(al)) setnames(al, "CHR", "CHROM")
   if (!"GENPOS" %in% names(al) && "POS" %in% names(al)) setnames(al, "POS", "GENPOS")
   al[, CHROM := coerce_chr(CHROM)]

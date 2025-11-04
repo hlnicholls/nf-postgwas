@@ -35,8 +35,8 @@ process COLLATE_LD {
   cd ${runroot_path}
 
   # Ensure the global LD directory exists and is populated (the Python script expects it)
-  GLOBAL_LD_DIR="${params.output_path}/Loci_Preprocessing/Single_trait_LD"
-  LOCAL_LD_DIR="Loci_Preprocessing/Single_trait_LD"
+  GLOBAL_LD_DIR="${params.output_path}/Loci_Preprocessing/LD"
+  LOCAL_LD_DIR="Loci_Preprocessing/LD"
   mkdir -p "\${GLOBAL_LD_DIR}"
 
   # If global dir is empty but local has files, sync them across

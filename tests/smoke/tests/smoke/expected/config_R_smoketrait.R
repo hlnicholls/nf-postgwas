@@ -36,7 +36,7 @@ pleiotropy_outpath       <- file.path(output_path, "Pleiotropy")
 # ============================================================
 # SECTION 3: SPECIFIC FILE PATHS
 # ============================================================
-all_loci    <- file.path(loci_output_path, "Singletrait_all_loci.csv")
+all_loci    <- file.path(loci_output_path, "All_loci_ungrouped.csv")
 # Canonical reference used downstream
 var_file    <- file.path(loci_output_path, "all_traits_loci_38_with_ld_genes.txt")
 

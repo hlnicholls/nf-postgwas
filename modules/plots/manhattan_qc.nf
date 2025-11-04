@@ -53,8 +53,11 @@ process MANHATTAN_QC {
   mkdir -p "\$QC_DIR"
 
   # --- Skip if per-trait images already exist in BOTH locations ----------------
+  # --- Skip if per-trait images already exist in QQ, QC AND Manhattan ---
+  MAN_DIR="${params.output_path}/GWAS_Plots"
   if compgen -G "\$QQ_DIR/*${trait}*.png" > /dev/null && \
-     compgen -G "\$QC_DIR/*${trait}*.png" > /dev/null ; then
+     compgen -G "\$QC_DIR/*${trait}*.png" > /dev/null && \
+     compgen -G "\$MAN_DIR/*Manhattan*${trait}*.png" > /dev/null ; then
       echo "✓ Manhattan/QC outputs for ${trait} already exist — skipping"
       echo "done" > "\$WORK_DIR/manhattan_qc_done_${trait}.txt"
       exit 0

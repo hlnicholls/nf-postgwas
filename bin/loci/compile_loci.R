@@ -143,11 +143,11 @@ LociCompiler <- R6::R6Class(
       dir.create(outdir, showWarnings = FALSE, recursive = TRUE)
 
       # Full combined
-      readr::write_csv(self$combined_loci_df, file.path(outdir, "Singletrait_all_loci.csv"))
+  readr::write_csv(self$combined_loci_df, file.path(outdir, "All_loci_ungrouped.csv"))
 
       # Unique by SNP
       unique_df <- self$combined_loci_df %>% dplyr::distinct(SNP, .keep_all = TRUE)
-      readr::write_csv(unique_df, file.path(outdir, "Singletrait_loci_unique_across_all_traits.csv"))
+  readr::write_csv(unique_df, file.path(outdir, "All_loci_ungrouped_unique_across_all_traits.csv"))
 
       if ("SNP" %in% names(self$combined_loci_df)) {
         message("Number of unique Lead SNPs: ", dplyr::n_distinct(self$combined_loci_df$SNP))

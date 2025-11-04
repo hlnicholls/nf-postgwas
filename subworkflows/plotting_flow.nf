@@ -23,29 +23,35 @@ workflow PLOT_FLOW {
   take:
     prepTriples
     ldAnnotated
-    lociCompiled
+    lociDone
 
   main:
+  // Wait for loci compilation to finish: `lociDone` is a value channel emitted by LOCI_FLOW
+  // and is combined with per-trait inputs below; no explicit `first()` call is needed.
+
     def qcPlotsR          = file("${projectDir}/bin/plots/QC_plots.R")
     def manhattanR        = file("${projectDir}/bin/plots/manhattan.R")
     def locuszoomR        = file("${projectDir}/bin/plots/locuszoom_plots.R")
     def makeRegionalPlotR = file("${projectDir}/bin/plots/makeRegionalPlot.R")
 
-    // --- Manhattan + QC (per-trait; skippable inside the process)
-    plotsIn = prepTriples.map { trait, runroot, rsids_file ->
-      tuple(trait, runroot, rsids_file, qcPlotsR, manhattanR)
-    }
+    // --- Manhattan + QC (per-trait; wait for lociDone so labels are available)
+    // combine produces a flattened tuple: (trait, runroot, rsids_file, loci_done_flag)
+    plotsIn = prepTriples
+      .combine(lociDone)
+      .map { trait, runroot, rsids_file, _loci_flag ->
+        tuple(trait, runroot, rsids_file, qcPlotsR, manhattanR)
+      }
     MANHATTAN_QC(plotsIn)
 
     // --- Regional plots (ALWAYS run; not skippable)
     // ldAnnotated emits (runroot, ld_file) — reduce to the LD file only
-    ldFileOnly = ldAnnotated.map { rr, ld_file -> ld_file }
+    ldFileOnly = ldAnnotated.map { pair -> pair[1] }
 
-      regionalIn = prepTriples
-        .combine(ldFileOnly)                           // (trait, runroot, rsids_file, ld_file)
-        .map { trait, runroot, rsids_file, ld_file ->  // correct arity
-          tuple(runroot, ld_file, locuszoomR, makeRegionalPlotR)   // (runroot, ld_file, script_locuszoom, script_makeRegionalPlot)
-        }
+    regionalIn = prepTriples
+      .combine(ldFileOnly)                           // produces flattened (trait, runroot, rsids_file, ld_file)
+      .map { trait, runroot, _rsids, ld_file ->
+        tuple(runroot, ld_file, locuszoomR, makeRegionalPlotR)
+      }
       REGIONAL_PLOTS(regionalIn)
 
   emit:

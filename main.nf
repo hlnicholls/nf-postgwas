@@ -202,7 +202,9 @@ workflow {
   if ( OPT.run_plot ) {
     if ( OPT.run_ld && ld_for_plot_ch && OPT.run_loci && loci_csv_for_plot_ch ) {
       log.info "✓ Running plotting"
-      PLOT_FLOW(prep_for_plot_ch, ld_for_plot_ch, loci_csv_for_plot_ch)
+      // Pass the lociDone channel (first return from LOCI_FLOW) so plotting waits
+      // for loci compilation to complete before running per-trait plotting.
+      PLOT_FLOW(prep_for_plot_ch, ld_for_plot_ch, lociDoneCh)
     } else {
       log.warn "⚠ Plotting requested but LD/LOCI data are unavailable — requires both. Skipping plotting."
     }

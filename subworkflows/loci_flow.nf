@@ -32,7 +32,7 @@ workflow LOCI_FLOW {
 
     // Also emit per-trait expected compiled loci CSV path
     compiledPerTrait = prepTriplesCh.map { trait, runroot, rsids_path ->
-      tuple(trait, runroot, file("${runroot}/Singletrait_all_loci.csv"))
+  tuple(trait, runroot, file("${runroot}/All_loci_ungrouped.csv"))
     }
 
   emit:

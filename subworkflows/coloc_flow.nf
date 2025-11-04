@@ -26,7 +26,7 @@ workflow COLOC_FLOW {
 
   main:
   // Canonical all-loci CSV written by LOCI_FLOW
-  def ALL_LOCI_CANON = file("${params.output_path}/Loci_Preprocessing/Singletrait_all_loci.csv")
+  def ALL_LOCI_CANON = file("${params.output_path}/Loci_Preprocessing/All_loci_ungrouped.csv")
 
   // Script paths (staged by Nextflow)
   def CUSTOM_COLOC_SCRIPT      = file("${baseDir}/bin/coloc/custom_coloc.R")
