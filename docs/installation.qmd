@@ -9,12 +9,18 @@ title: Installation
 
 ## Using the provided Docker image
 
-This repository includes a Dockerfile that bundles required tools and environments.
+A pre-built Docker image is available on Docker Hub, containing all required tools and environments for the pipeline.
 
-Build the image locally (example):
+You can pull it directly without needing to build locally:
 
 ```bash
-docker build --platform linux/amd64 -t postgwas-pipeline .
+docker pull hlnicholls/postgwas-pipeline:latest
+```
+
+If you are on an Apple Silicon (M1/M2) Mac, pull the amd64 version explicitly:
+
+```bash
+docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 ```
 
 Run an interactive container (edit mounts to match your paths):

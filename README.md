@@ -26,7 +26,7 @@ Pull the docker image and run it with the following commands (volume mounts will
 
 ```
 # 1) Pull the image
-docker pull hlnicholls/postgwas-pipeline:latest
+docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 
 # 2) Run it (auto-activates conda env postgwas_py39)
 docker run -it --rm --name postgwas-pipeline \
