@@ -24,7 +24,7 @@ Synthetic GWASs have been generated in ```/nf-postgwas/data/input/tests/syntheti
 
 To run the pipeline with this synthetic data:
 
-```
+```bash
 docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 
 git clone https://github.com/hlnicholls/nf-postgwas.git
