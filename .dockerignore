@@ -2,6 +2,7 @@
 .git-lfs
 **/.nextflow*
 **/.DS_Store
+.DS_Store
 
 databases
 postgwas-db-grch38-2025-11

@@ -104,7 +104,10 @@ workflow PRIORITISATION_FLOW {
           // filesystem errors (eg. missing parent dir) causing the workflow
           // to abort. On any error, fall back to the placeholder.
           try {
-            def popsPath = popsTop.toPath()
+            // `popsTop` may already be a java.nio.file.Path (eg. PathImpl/UnixPath),
+            // or a string/other file-like object. Converting via Paths.get(String)
+            // is robust in all cases and returns a Path suitable for Files.* calls.
+            def popsPath = java.nio.file.Paths.get(popsTop.toString())
             if (!Files.exists(popsPath)) {
               log.warn "PoPS top-genes file not found at expected path: ${popsTop}. Proceeding with placeholder; prioritisation will omit PoPS."
               popsTop = file("/dev/null")
@@ -114,7 +117,12 @@ workflow PRIORITISATION_FLOW {
             }
           }
           catch (Exception e) {
-            log.warn "Failed to inspect PoPS file ${popsTop}: ${e.message} — proceeding with placeholder."
+            // Non-fatal filesystem inspection errors (race conditions, symlink timing,
+            // container peculiarities) are expected occasionally. Lower the log level
+            // to DEBUG to avoid alarming users while preserving the fallback behaviour.
+            log.debug "Failed to inspect PoPS file ${popsTop}: ${e.message} — proceeding with placeholder."
+            // Keep the full exception on TRACE so developers can inspect stack traces when needed.
+            log.trace(e)
             popsTop = file("/dev/null")
           }
         }

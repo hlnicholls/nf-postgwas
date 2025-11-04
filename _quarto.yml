@@ -51,8 +51,5 @@ format:
   html:
     theme: cosmo
 
-# Do not execute code blocks by default when building the site to keep
-# the build fast and dependency-free. We can enable execution per-page
-# by setting `execute: true` in a page's front matter.
 execute:
   enabled: false
