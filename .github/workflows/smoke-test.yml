@@ -27,5 +27,5 @@ jobs:
           chmod +x ./nf-test || true
           # Ensure nf-test runtime is available (will download if needed)
           ./nf-test update || true
-          # Run the repository test harness
-          ./nf-test test
+          # Run the repository test harness (moved to bin/)
+          ./bin/nf-test test
