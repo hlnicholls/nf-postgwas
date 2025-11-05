@@ -11,7 +11,7 @@ This pipeline provides a docker image with all dependencies pre-installed to run
 
 The `nf-postgwas` pipeline integrates variant annotation, gene prioritisation, fine mapping, enrichment, and more. It is designed for flexible, modular analysis of GWAS summary statistics and downstream biological interpretation.
 
-![nf-postgwas workflow diagram](/docs/images/nf-postgwas-figure.png)
+![nf-postgwas workflow diagram](/docs/images/nf-postgwas.png)
 
 ## Installation and Setup
 
@@ -26,9 +26,7 @@ Docker needs to be installed on your system. Instructions for installing Docker 
 
 **Only an example 1000 genomes reference panel is given. You will also need to mount your own LD reference panel for accurate LD calculations.**
 
-To download the huggingface dataset, you can use the `datasets` library in Python or the `huggingface-cli` tool. A script for downloading the dataset is provided in `/bin/download_postgwas_db.sh`.
-
-You can download it using either Git LFS or the Hugging Face CLI/Python API.
+To download the huggingface dataset, you can use either Git LFS or the Hugging Face CLI/Python API.
 
 ### Download postgwas-db with Git LFS
 ```bash
@@ -36,7 +34,7 @@ git lfs install --skip-repo
 git clone https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
 ```
 
-Or in Python:
+### Or in Python:
 ```python
 from huggingface_hub import snapshot_download
 snapshot_download(
@@ -68,8 +66,10 @@ Conda environments in Docker image:
 Installed Software
 - Miniconda3
 - Nextflow
+- nf-test
 - PLINK1.9 and PLINK2
 - MAGMA
+- R and required R packages
 
 ## Running the Pipeline
 

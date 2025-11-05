@@ -3,6 +3,6 @@ title: "nf-postgwas - Post-GWAS Analysis Pipeline"
 description: "nf-postgwas is a modular Nextflow pipeline to perform post-GWAS analyses, including variant annotation, loci compilation, LD annotation, fine-mapping, MAGMA gene analysis, PoPS prioritisation, colocalisation (GTEx/custom), enrichment, and druggability assessment."
 ---
 
-![](images/nf-postgwas-figure.png){fig-alt="nf-postgwas workflow"}
+![](images/nf-postgwas.png){fig-alt="nf-postgwas workflow"}
 
 This documentation site provides installation instructions, quickstart usage examples, per-subworkflow descriptions, and developer notes.
