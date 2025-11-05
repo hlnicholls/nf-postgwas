@@ -9,11 +9,75 @@ Key responsibilities
 - Prepare locus-specific inputs for coloc tests.
 - Run GTEx coloc (if `run_gtex_coloc` enabled) and custom trait coloc (if `run_custom_coloc`).
 
-Important parameters
+Important parameters set in `params.yaml`
 
 - `run_coloc`, `run_gtex_coloc`, `run_custom_coloc` - main toggles.
+- `gtex_tissues` - set to GTEx tissue names. Per tissue you must have added the required files - as seen in the [huggingface dataset](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11/tree/main/gtex_v8_data)
 - `custom_trait_name`, `custom_gwas_path` - supply a custom GWAS for coloc.
 
 Outputs
 
 - Per-locus coloc summary files and aggregated tables indicating colocalised signals.
+
+---
+
+# Custom Colocalisation Configuration
+
+The pipeline supports running colocalisation analysis with your own custom GWAS trait.
+
+To enable custom colocalisation, set the following parameters in your `params.yaml`:
+
+```yaml
+# Colocalisation settings
+run_custom_coloc: true  # Set to true to enable custom trait colocalisation
+custom_trait_name: "MyTrait"  # Name for your custom trait (used in output filenames)
+custom_gwas_path: "/path/to/your/custom_gwas_summary_stats.txt"  # Full path to GWAS file
+```
+
+## Input File Requirements
+
+Your custom GWAS summary statistics file must be **tab-delimited** and contain the following columns:
+
+### Required Columns (must match exactly):
+- `chromosome` — Chromosome number (integer, e.g. 1, 2, ...)
+- `base_pair_location` — Base pair position in GRCh38 (integer)
+- `effect_allele` — Effect allele (A, T, C, G, or indel)
+- `other_allele` — Other/reference allele
+- `effect_allele_frequency` — Frequency of effect allele (0-1, decimal)
+- `beta` — Effect size (numeric)
+- `standard_error` — Standard error of beta (numeric)
+- `p_value` — P-value (numeric)
+
+### Optional Columns:
+- `base_pair_location37` — Base pair position in GRCh37 (integer, for output only)
+- `variant_id` — rsID (not required, can be blank)
+
+### Formatting Notes
+- The file must be tab-delimited (not comma-separated)
+- All required columns must be present, even if some values are blank
+- Column names must match exactly (case-sensitive)
+- No quotes around values
+- No missing columns (missing values can be blank, but columns must exist)
+- The script will use `chromosome`, `base_pair_location`, `effect_allele`, `other_allele`, `effect_allele_frequency`, `beta`, `standard_error`, and `p_value` for colocalisation
+- If `base_pair_location37` is present, it will be included in output files for compatibility
+
+## Example Input File Format
+
+| chromosome | base_pair_location | effect_allele | other_allele | beta  | standard_error | p_value  | effect_allele_frequency | base_pair_location37 |
+|-------------|--------------------|---------------|---------------|-------|----------------|----------|--------------------------|----------------------|
+| 1 | 1234567 | A | G | 0.05 | 0.01 | 0.00001 | 0.25 | 1234500 |
+| 1 | 2345678 | T | C | -0.03 | 0.015 | 0.05 | 0.42 | 2345600 |
+| 2 | 3456789 | G | A | 0.08 | 0.02 | 0.0001 | 0.15 | 3456700 |
+
+## Output Files
+
+When custom colocalisation runs, it will generate the following files in `<output_path>/Colocalisation/`:
+
+1. `<custom_trait_name>_coloc_pp4_all.csv` - Colocalised loci with PP4 > 0.8
+2. `<custom_trait_name>_coloc_all_variants_pp4.csv` - All variants with all PP4 values
+3. `<custom_trait_name>_coloc_pp3_all.csv` - H3 results (different causal variants)
+4. `coloc_<custom_trait_name>_res_all_<phenotype>.rds` - Raw RDS files with full coloc results per phenotype
+
+### What happens if there are no colocalising results?
+
+If your custom colocalisation step finds no colocalising loci or produces no results, the pipeline will exit that step gracefully and continue running the rest of the workflow. No error will be raised, and the pipeline will not fail. The output files for that step may be empty or missing, depending on the analysis, but this is expected behavior when no colocalisation (H4>0.8) is detected.
