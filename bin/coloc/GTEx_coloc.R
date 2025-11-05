@@ -22,7 +22,14 @@ suppressPackageStartupMessages({
   library(dplyr)
 })
 
-source("config_R.R")
+# Source the runroot config file explicitly from the current working directory.
+# Nextflow cds into the runroot before executing this script, so load the
+# configuration from there. Produce a helpful error if it is missing.
+cfg <- file.path(getwd(), "config_R.R")
+if (!file.exists(cfg)) {
+  stop(sprintf("Missing runroot config: %s\nEnsure CREATE_CONFIG_SHIMS ran and produced config_R.R in the runroot directory.", cfg))
+}
+source(cfg)
 
 # -----------------------
 # User-configurable knobs

@@ -1,6 +1,14 @@
 # eQTL colocalisation analysis pipeline
 
-source("config_R.R")
+# Source the runroot config file explicitly from the current working directory.
+# The Nextflow process changes into the runroot before running this script, so
+# sourcing './config_R.R' is the most robust approach. Fail early with a clear
+# error if the file is missing to avoid vague "object not found" errors later.
+cfg <- file.path(getwd(), "config_R.R")
+if (!file.exists(cfg)) {
+  stop(sprintf("Missing runroot config: %s\nEnsure CREATE_CONFIG_SHIMS ran and produced config_R.R in the runroot directory.", cfg))
+}
+source(cfg)
 library(data.table)
 
 output_dir <- paste0(coloc_path,"/eQTL")
