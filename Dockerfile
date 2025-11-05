@@ -37,6 +37,15 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN apt-get update && apt-get install -y graphviz && rm -rf /var/lib/apt/lists/*
 
+# --- MAGMA: install binary into image (keep data files in external databases mount) ---
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 && rm -rf /var/lib/apt/lists/*
+ARG MAGMA_URL="https://vu.data.surfsara.nl/index.php/s/zkKbNeNOZAhFXZB/download"
+RUN mkdir -p /opt/magma && \
+    curl -L -o /tmp/magma_v1.10.zip "${MAGMA_URL}" && \
+    unzip /tmp/magma_v1.10.zip -d /opt/magma && \
+    if [ -f /opt/magma/magma ]; then chmod 755 /opt/magma/magma && install -m 0755 /opt/magma/magma /usr/local/bin/magma; else echo "MAGMA binary not found in archive"; ls -la /opt/magma; exit 1; fi && \
+    rm -f /tmp/magma_v1.10.zip
+
 # ----------------------------
 # Global R: install packages
 # ----------------------------
@@ -111,15 +120,6 @@ RUN wget -qO- https://get.nf-test.com | bash && \
 #RUN git clone https://github.com/JonJala/mtag /nf-postgwas/nf-nf-postgwas/software/mtag
 #RUN git clone https://github.com/getian107/PRScs.git /nf-postgwas/nf-nf-postgwas/Software/PRScs
 
-# Create a new environment for MAGMA and install the required library
-#RUN conda create -n nf-postgwas_magma && \
-# /bin/bash -c "source activate nf-postgwas_magma && conda install -c conda-forge -y libstdcxx-ng=9.3.0"
-
-# Download and install MAGMA
-# RUN mkdir -p /nf-postgwas/nf-nf-postgwas/software/MAGMA && \
-# cd /nf-postgwas/nf-nf-postgwas/software/MAGMA && \
-# wget -O magma_v1.10.zip https://vu.data.surfsara.nl/index.php/s/zkKbNeNOZAhFXZB/download && \
-# unzip magma_v1.10.zip
 
 # Install Plink 1.9
 RUN wget https://s3.amazonaws.com/plink1-assets/plink_linux_x86_64_20210606.zip && \
