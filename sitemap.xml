@@ -2,86 +2,86 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/parameters.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/usage.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/examples.html</loc>
-    <lastmod>2025-11-05T16:09:39.465Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.990Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/druggability_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/magma_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/prioritisation_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/prep_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/pops_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/developer_guide.html</loc>
-    <lastmod>2025-11-05T16:09:39.465Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.990Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/index.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.991Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/conf/HPC.html</loc>
-    <lastmod>2025-11-05T16:09:39.430Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.955Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/index.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/citation.html</loc>
-    <lastmod>2025-11-05T16:09:39.465Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.990Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/plotting_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/index.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/fine_mapping_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/coloc_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/ld_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/subworkflows/loci_flow.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/troubleshooting.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.992Z</lastmod>
   </url>
   <url>
     <loc>https://hlnicholls.github.io/nf-postgwas/docs/installation.html</loc>
-    <lastmod>2025-11-05T16:09:39.467Z</lastmod>
+    <lastmod>2025-11-05T16:12:31.991Z</lastmod>
   </url>
 </urlset>
