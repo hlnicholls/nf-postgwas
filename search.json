@@ -158,7 +158,28 @@
     "href": "docs/subworkflows/coloc_flow.html",
     "title": "COLOC_FLOW",
     "section": "",
-    "text": "COLOC_FLOW runs colocalisation analyses between GWAS loci and external QTL/GWAS summary statistics (e.g., GTEx v8 eQTLs or a custom trait).\nKey responsibilities\n\nPrepare locus-specific inputs for coloc tests.\nRun GTEx coloc (if run_gtex_coloc enabled) and custom trait coloc (if run_custom_coloc).\n\nImportant parameters\n\nrun_coloc, run_gtex_coloc, run_custom_coloc - main toggles.\ncustom_trait_name, custom_gwas_path - supply a custom GWAS for coloc.\n\nOutputs\n\nPer-locus coloc summary files and aggregated tables indicating colocalised signals."
+    "text": "COLOC_FLOW runs colocalisation analyses between GWAS loci and external QTL/GWAS summary statistics (e.g., GTEx v8 eQTLs or a custom trait).\nKey responsibilities\nImportant parameters set in params.yaml\nOutputs"
+  },
+  {
+    "objectID": "docs/subworkflows/coloc_flow.html#input-file-requirements",
+    "href": "docs/subworkflows/coloc_flow.html#input-file-requirements",
+    "title": "COLOC_FLOW",
+    "section": "Input File Requirements",
+    "text": "Input File Requirements\nYour custom GWAS summary statistics file must be tab-delimited and contain the following columns:\n\nRequired Columns (must match exactly):\n\nchromosome — Chromosome number (integer, e.g. 1, 2, …)\nbase_pair_location — Base pair position in GRCh38 (integer)\neffect_allele — Effect allele (A, T, C, G, or indel)\nother_allele — Other/reference allele\neffect_allele_frequency — Frequency of effect allele (0-1, decimal)\nbeta — Effect size (numeric)\nstandard_error — Standard error of beta (numeric)\np_value — P-value (numeric)\n\n\n\nOptional Columns:\n\nbase_pair_location37 — Base pair position in GRCh37 (integer, for output only)\nvariant_id — rsID (not required, can be blank)\n\n\n\nFormatting Notes\n\nThe file must be tab-delimited (not comma-separated)\nAll required columns must be present, even if some values are blank\nColumn names must match exactly (case-sensitive)\nNo quotes around values\nNo missing columns (missing values can be blank, but columns must exist)\nThe script will use chromosome, base_pair_location, effect_allele, other_allele, effect_allele_frequency, beta, standard_error, and p_value for colocalisation\nIf base_pair_location37 is present, it will be included in output files for compatibility"
+  },
+  {
+    "objectID": "docs/subworkflows/coloc_flow.html#example-input-file-format",
+    "href": "docs/subworkflows/coloc_flow.html#example-input-file-format",
+    "title": "COLOC_FLOW",
+    "section": "Example Input File Format",
+    "text": "Example Input File Format\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nchromosome\nbase_pair_location\neffect_allele\nother_allele\nbeta\nstandard_error\np_value\neffect_allele_frequency\nbase_pair_location37\n\n\n\n\n1\n1234567\nA\nG\n0.05\n0.01\n0.00001\n0.25\n1234500\n\n\n1\n2345678\nT\nC\n-0.03\n0.015\n0.05\n0.42\n2345600\n\n\n2\n3456789\nG\nA\n0.08\n0.02\n0.0001\n0.15\n3456700"
+  },
+  {
+    "objectID": "docs/subworkflows/coloc_flow.html#output-files",
+    "href": "docs/subworkflows/coloc_flow.html#output-files",
+    "title": "COLOC_FLOW",
+    "section": "Output Files",
+    "text": "Output Files\nWhen custom colocalisation runs, it will generate the following files in &lt;output_path&gt;/Colocalisation/:\n\n&lt;custom_trait_name&gt;_coloc_pp4_all.csv - Colocalised loci with PP4 &gt; 0.8\n&lt;custom_trait_name&gt;_coloc_all_variants_pp4.csv - All variants with all PP4 values\n&lt;custom_trait_name&gt;_coloc_pp3_all.csv - H3 results (different causal variants)\ncoloc_&lt;custom_trait_name&gt;_res_all_&lt;phenotype&gt;.rds - Raw RDS files with full coloc results per phenotype\n\n\nWhat happens if there are no colocalising results?\nIf your custom colocalisation step finds no colocalising loci or produces no results, the pipeline will exit that step gracefully and continue running the rest of the workflow. No error will be raised, and the pipeline will not fail. The output files for that step may be empty or missing, depending on the analysis, but this is expected behavior when no colocalisation (H4&gt;0.8) is detected."
   },
   {
     "objectID": "docs/subworkflows/ld_flow.html",

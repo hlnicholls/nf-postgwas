@@ -20,6 +20,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -214,17 +249,142 @@ ul.task-list li input[type="checkbox"] {
 <li>Prepare locus-specific inputs for coloc tests.</li>
 <li>Run GTEx coloc (if <code>run_gtex_coloc</code> enabled) and custom trait coloc (if <code>run_custom_coloc</code>).</li>
 </ul>
-<p>Important parameters</p>
+<p>Important parameters set in <code>params.yaml</code></p>
 <ul>
 <li><code>run_coloc</code>, <code>run_gtex_coloc</code>, <code>run_custom_coloc</code> - main toggles.</li>
+<li><code>gtex_tissues</code> - set to GTEx tissue names. Per tissue you must have added the required files - as seen in the <a href="https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11/tree/main/gtex_v8_data">huggingface dataset</a></li>
 <li><code>custom_trait_name</code>, <code>custom_gwas_path</code> - supply a custom GWAS for coloc.</li>
 </ul>
 <p>Outputs</p>
 <ul>
 <li>Per-locus coloc summary files and aggregated tables indicating colocalised signals.</li>
 </ul>
+<hr>
+<section id="custom-colocalisation-configuration" class="level1">
+<h1>Custom Colocalisation Configuration</h1>
+<p>The pipeline supports running colocalisation analysis with your own custom GWAS trait.</p>
+<p>To enable custom colocalisation, set the following parameters in your <code>params.yaml</code>:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode yaml code-with-copy"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Colocalisation settings</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">run_custom_coloc</span><span class="kw">:</span><span class="at"> </span><span class="ch">true</span><span class="co">  # Set to true to enable custom trait colocalisation</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">custom_trait_name</span><span class="kw">:</span><span class="at"> </span><span class="st">"MyTrait"</span><span class="co">  # Name for your custom trait (used in output filenames)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">custom_gwas_path</span><span class="kw">:</span><span class="at"> </span><span class="st">"/path/to/your/custom_gwas_summary_stats.txt"</span><span class="co">  # Full path to GWAS file</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="input-file-requirements" class="level2">
+<h2 class="anchored" data-anchor-id="input-file-requirements">Input File Requirements</h2>
+<p>Your custom GWAS summary statistics file must be <strong>tab-delimited</strong> and contain the following columns:</p>
+<section id="required-columns-must-match-exactly" class="level3">
+<h3 class="anchored" data-anchor-id="required-columns-must-match-exactly">Required Columns (must match exactly):</h3>
+<ul>
+<li><code>chromosome</code> — Chromosome number (integer, e.g.&nbsp;1, 2, …)</li>
+<li><code>base_pair_location</code> — Base pair position in GRCh38 (integer)</li>
+<li><code>effect_allele</code> — Effect allele (A, T, C, G, or indel)</li>
+<li><code>other_allele</code> — Other/reference allele</li>
+<li><code>effect_allele_frequency</code> — Frequency of effect allele (0-1, decimal)</li>
+<li><code>beta</code> — Effect size (numeric)</li>
+<li><code>standard_error</code> — Standard error of beta (numeric)</li>
+<li><code>p_value</code> — P-value (numeric)</li>
+</ul>
+</section>
+<section id="optional-columns" class="level3">
+<h3 class="anchored" data-anchor-id="optional-columns">Optional Columns:</h3>
+<ul>
+<li><code>base_pair_location37</code> — Base pair position in GRCh37 (integer, for output only)</li>
+<li><code>variant_id</code> — rsID (not required, can be blank)</li>
+</ul>
+</section>
+<section id="formatting-notes" class="level3">
+<h3 class="anchored" data-anchor-id="formatting-notes">Formatting Notes</h3>
+<ul>
+<li>The file must be tab-delimited (not comma-separated)</li>
+<li>All required columns must be present, even if some values are blank</li>
+<li>Column names must match exactly (case-sensitive)</li>
+<li>No quotes around values</li>
+<li>No missing columns (missing values can be blank, but columns must exist)</li>
+<li>The script will use <code>chromosome</code>, <code>base_pair_location</code>, <code>effect_allele</code>, <code>other_allele</code>, <code>effect_allele_frequency</code>, <code>beta</code>, <code>standard_error</code>, and <code>p_value</code> for colocalisation</li>
+<li>If <code>base_pair_location37</code> is present, it will be included in output files for compatibility</li>
+</ul>
+</section>
+</section>
+<section id="example-input-file-format" class="level2">
+<h2 class="anchored" data-anchor-id="example-input-file-format">Example Input File Format</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 13%">
+<col style="width: 10%">
+<col style="width: 10%">
+<col style="width: 4%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 18%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>chromosome</th>
+<th>base_pair_location</th>
+<th>effect_allele</th>
+<th>other_allele</th>
+<th>beta</th>
+<th>standard_error</th>
+<th>p_value</th>
+<th>effect_allele_frequency</th>
+<th>base_pair_location37</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td>1234567</td>
+<td>A</td>
+<td>G</td>
+<td>0.05</td>
+<td>0.01</td>
+<td>0.00001</td>
+<td>0.25</td>
+<td>1234500</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>2345678</td>
+<td>T</td>
+<td>C</td>
+<td>-0.03</td>
+<td>0.015</td>
+<td>0.05</td>
+<td>0.42</td>
+<td>2345600</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>3456789</td>
+<td>G</td>
+<td>A</td>
+<td>0.08</td>
+<td>0.02</td>
+<td>0.0001</td>
+<td>0.15</td>
+<td>3456700</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="output-files" class="level2">
+<h2 class="anchored" data-anchor-id="output-files">Output Files</h2>
+<p>When custom colocalisation runs, it will generate the following files in <code>&lt;output_path&gt;/Colocalisation/</code>:</p>
+<ol type="1">
+<li><code>&lt;custom_trait_name&gt;_coloc_pp4_all.csv</code> - Colocalised loci with PP4 &gt; 0.8</li>
+<li><code>&lt;custom_trait_name&gt;_coloc_all_variants_pp4.csv</code> - All variants with all PP4 values</li>
+<li><code>&lt;custom_trait_name&gt;_coloc_pp3_all.csv</code> - H3 results (different causal variants)</li>
+<li><code>coloc_&lt;custom_trait_name&gt;_res_all_&lt;phenotype&gt;.rds</code> - Raw RDS files with full coloc results per phenotype</li>
+</ol>
+<section id="what-happens-if-there-are-no-colocalising-results" class="level3">
+<h3 class="anchored" data-anchor-id="what-happens-if-there-are-no-colocalising-results">What happens if there are no colocalising results?</h3>
+<p>If your custom colocalisation step finds no colocalising loci or produces no results, the pipeline will exit that step gracefully and continue running the rest of the workflow. No error will be raised, and the pipeline will not fail. The output files for that step may be empty or missing, depending on the analysis, but this is expected behavior when no colocalisation (H4&gt;0.8) is detected.</p>
 
 
+</section>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
