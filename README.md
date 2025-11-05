@@ -15,15 +15,42 @@ The `nf-postgwas` pipeline integrates variant annotation, gene prioritisation, f
 
 ## Installation and Setup
 
+First clone this repository:
+```
+git clone https://github.com/hlnicholls/nf-postgwas.git
+```
+
 Docker needs to be installed on your system. Instructions for installing Docker can be found [here](https://docs.docker.com/get-docker/).
 
 **Several databases need to be mounted to the docker container to run the pipeline. These can be be downloaded from: [huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11)**
 
 **Only an example 1000 genomes reference panel is given. You will also need to mount your own LD reference panel for accurate LD calculations.**
 
+To download the huggingface dataset, you can use the `datasets` library in Python or the `huggingface-cli` tool. A script for downloading the dataset is provided in `/bin/download_postgwas_db.sh`.
+
+You can download it using either Git LFS or the Hugging Face CLI/Python API.
+
+### Download postgwas-db with Git LFS
+```bash
+git lfs install --skip-repo
+git clone https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
+```
+
+Or in Python:
+```python
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="hlnicholls/postgwas-db-grch38-2025-11",
+    repo_type="dataset",
+    local_dir="./postgwas-db-grch38-2025-11"
+)
+```
+
+### Setup and run docker container
+
 Pull the docker image and run it with the following commands (volume mounts will need to modified for your input data):
 
-```
+```bash
 # 1) Pull the image
 docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 
@@ -43,12 +70,6 @@ Installed Software
 - Nextflow
 - PLINK1.9 and PLINK2
 - MAGMA
-
-Optional installations (currently commented out in Dockerfile, steps TBD in nf-postgwas)
-- VEP
-- DEPICT
-- PRS-CS
-- MTAG
 
 ## Running the Pipeline
 
