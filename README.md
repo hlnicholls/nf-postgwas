@@ -17,7 +17,13 @@ The `nf-postgwas` pipeline integrates variant annotation, gene prioritisation, f
 ### 1. Install Docker
 Docker needs to be installed on your system. Instructions for installing Docker can be found [here](https://docs.docker.com/get-docker/).
 
-### 2. Download postgwas-db
+### 2. Clone the Nextflow pipeline repository:
+```
+git clone https://github.com/hlnicholls/nf-postgwas.git
+cd nf-postgwas
+```
+
+### 3. Download postgwas-db
 **Several databases need to be mounted to the docker container to run the pipeline. These can be be downloaded from: [huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11)**
 
 **Only an example 1000 genomes reference panel is given. You will also need to mount your own LD reference panel for accurate LD calculations.**
@@ -38,12 +44,6 @@ snapshot_download(
     repo_type="dataset",
     local_dir="./postgwas-db-grch38-2025-11"
 )
-```
-
-### 3. Clone the Nextflow pipeline repository:
-```
-git clone https://github.com/hlnicholls/nf-postgwas.git
-cd nf-postgwas
 ```
 
 ### 4. Edit the params.yaml file with your file paths
