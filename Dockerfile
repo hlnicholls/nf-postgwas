@@ -133,8 +133,6 @@ RUN wget https://s3.amazonaws.com/plink2-assets/alpha6/plink2_linux_x86_64_20241
     mv plink2 /usr/local/bin/ && \
     rm plink2_linux_x86_64_20241124.zip
 
-COPY . /nf-postgwas
-
 # Python 2.7 environment specifically for DEPICT, MTAG and LDSC
 RUN conda env create -f /nf-postgwas/postgwas_py27.yaml
 

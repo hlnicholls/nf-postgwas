@@ -14,26 +14,23 @@ The `nf-postgwas` pipeline integrates variant annotation, gene prioritisation, f
 
 ## Installation and Setup
 
-First clone this repository:
-```
-git clone https://github.com/hlnicholls/nf-postgwas.git
-```
-
+### 1. Install Docker
 Docker needs to be installed on your system. Instructions for installing Docker can be found [here](https://docs.docker.com/get-docker/).
 
+### 2. Download postgwas-db
 **Several databases need to be mounted to the docker container to run the pipeline. These can be be downloaded from: [huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11](https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11)**
 
 **Only an example 1000 genomes reference panel is given. You will also need to mount your own LD reference panel for accurate LD calculations.**
 
 To download the huggingface dataset, you can use either Git LFS or the Hugging Face CLI/Python API.
 
-### Download postgwas-db with Git LFS
+#### Download postgwas-db with Git LFS
 ```bash
 git lfs install --skip-repo
 git clone https://huggingface.co/datasets/hlnicholls/postgwas-db-grch38-2025-11
 ```
 
-### Or in Python:
+#### Or in Python:
 ```python
 from huggingface_hub import snapshot_download
 snapshot_download(
@@ -43,7 +40,21 @@ snapshot_download(
 )
 ```
 
-### Setup and run docker container
+### 3. Clone the Nextflow pipeline repository:
+```
+git clone https://github.com/hlnicholls/nf-postgwas.git
+cd nf-postgwas
+```
+
+### 4. Edit the params.yaml file with your file paths
+- Also check the `/conf/local.config` memory and CPU settings (or whichever config you plan to use)
+For `params.yaml`:
+  - You will need to set the paths to your mounted input GWAS files and reference databases
+  - Downloaded databases need to be mounted and paths set correctly
+  - For several pipeline steps, you will need to also mount your LD reference panel separately (only a synthetic panel is provided in the docker image for testing)
+
+
+### 5. Setup and run docker container
 
 Pull the docker image and run it with the following commands (volume mounts will need to modified for your input data):
 
@@ -53,10 +64,13 @@ docker pull --platform linux/amd64 hlnicholls/postgwas-pipeline:latest
 
 # 2) Run it with huggingface dataset downloaded and mounted
 docker run -it --rm --name postgwas-pipeline \
+  -v "/path/on/host/nf-postgwas:/nf-postgwas" \
   -v "/path/on/host/postgwas-db-grch38-2025-11:/nf-postgwas/postgwas-db-grch38-2025-11:ro" \
   -v "/path/on/host/Regenie_GWAS_Input:/nf-postgwas/GWAS_Input:ro" \
   -v "/path/on/host/postgwas_results:/nf-postgwas/results" \
-  hlnicholls/postgwas-pipeline:latest
+  -w /nf-postgwas \
+  hlnicholls/postgwas-pipeline:latest \
+  nextflow run . -profile docker -params-file params.yaml
 ```
 
 Conda environments in Docker image:
@@ -71,15 +85,7 @@ Installed Software
 - MAGMA
 - R and required R packages
 
-## Running the Pipeline
-
-1. Check the `/conf/local.config` memory and CPU settings (or whichever config you plan to use)
-2. Set your input params in `params.yaml` in `/nf-postgwas/params.yaml` 
-  - You will need to set the paths to your mounted input GWAS files and reference databases
-  - Downloaded databases need to be mounted and paths set correctly
-  - For several pipeline steps, you will need to also mount your LD reference panel separately (only a synthetic panel is provided in the docker image for testing)
-
-3. Run the pipeline with Nextflow:
+### Run the pipeline with Nextflow
 
 ```bash
 conda activate postgwas_py39 # needs to be activated at start
